@@ -5,8 +5,8 @@ import React from "react";
 async function editPost() {
   const posts: PostType[] = await getAllPosts();
   return (
-    <div className="flex flex-col relative">
-      <div className="grid grid-cols-4 my-4 ml-2 border-b-2 border-slate-600 font-bold">
+    <div className="flex flex-col ">
+      <div className="grid grid-cols-4 my-4 ml-2 border-b-2 border-slate-600 font-bold relative">
         <div>index</div>
         <div>title</div>
         <div>body</div>
@@ -14,7 +14,7 @@ async function editPost() {
       </div>
       <div
         className="w-full h-fit grid
-       grid-cols-4 pl-2  "
+       grid-cols-4 pl-2 "
       >
         {posts.reverse().map((pt, i) => (
           <PostTable key={1} postData={pt} index={i} />

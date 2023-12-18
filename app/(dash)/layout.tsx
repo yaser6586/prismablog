@@ -79,7 +79,7 @@ function Layout({ children }: { children: React.ReactNode }) {
         </div>
         <div className="flex flex-row w-full h-full  md:hidden  ">
           <button className="btn btn-info rounded-b-xl rounded-t-none text-slate-50">
-            <Link href={""} title="add post">
+            <Link href={"/dashboard/addpost"} title="add post">
               <TiFolderAdd size={35} />
             </Link>
           </button>
@@ -87,7 +87,7 @@ function Layout({ children }: { children: React.ReactNode }) {
             className="btn btn-info rounded-b-xl rounded-t-none text-slate-50"
             name="addpost"
           >
-            <Link href={""} title="edit posts">
+            <Link href={"/dashboard/editpost"} title="edit posts">
               <FaRegListAlt size={30} />
             </Link>
           </button>

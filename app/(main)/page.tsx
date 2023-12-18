@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { getAllPosts } from "../lib/data";
 import Post from "../ui/main/Post";
-import { PrismaClient } from "@prisma/client";
 
 export default async function Home() {
   const posts: PostType[] = await getAllPosts();

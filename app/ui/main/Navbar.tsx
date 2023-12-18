@@ -131,14 +131,18 @@ function Navbar() {
           {!showMenu ? <RxHamburgerMenu size={30} /> : <IoClose size={30} />}
         </div>
       </div>
-      <div className="text-center my-11" onClick={() => setShowCatMenu(false)}>
-        <h1 className="text-5xl font-bold">
-          welcome to my <span className="text-yellow-500">website</span>
+      <div
+        className="flex flex-col justify-center "
+        onClick={() => setShowCatMenu(false)}
+      >
+        <h1 className="text-5xl text-center font-bold m-auto tracking-tighter ">
+          به <span className="text-yellow-500">وب سایت</span> من خوش آمدید
         </h1>
-        <p>
-          Lorem ipsum dolor sit, amet consectetur adipisicing <br /> elit. Nulla
-          incidunt laborum minus illo voluptatibus laudantium <br />{" "}
-          necessitatibus accusamus non doloremque amet!
+        <p className=" m-auto my-2 text-center">
+          در اینجا می توانیید از جدیدترین اخبار دنیاس تلنولوژی با خبر شوید{" "}
+          <br /> در اینجا همه خبرها خبر خوب است
+          <br />
+          دنیای گجتها و تکنولوژی
         </p>
       </div>
     </div>

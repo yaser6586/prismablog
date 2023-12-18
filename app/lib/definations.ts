@@ -2,27 +2,31 @@ type PostType = {
     id  : string
     createdAt: Date
     updatedAt :Date
-    title   :  String 
-    content : String | null
+    title   :  string 
+    content : string | null
+    imageUrl? : string | null
+    category? : string | null
+    like? :   number | null
+    view ? :   number | null
     published: Boolean 
     authorId : string
   }
   
   type ProfileType = {
     id   :  string
-    bio  : String | null
+    bio  : string | null
     userId : string
   }
   
   type UserType = {
     id    :  string
-    email  : String 
-    name : String | null
+    email  : string 
+    name : string | null
     profile? : ProfileType
   }
   type CommentType = {
     id  :   string
-    comment :String
+    comment :string
    
     postId : string   
   }

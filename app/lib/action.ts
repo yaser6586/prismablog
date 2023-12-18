@@ -13,19 +13,31 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient()
 
 export async function addPost(data : FormData){
-    const users = await getAllUser();
-    console.log(users)
-    const userId = users[3].id;
-    const title = data.get("title") as string
-    const content = data.get('body') as string
-    addNewPost(userId,title,content)
+    try {
+        const users = await getAllUser();
+        
+        const userId = users[1].id;
+        const title = data.get("title") as string
+        const content = data.get('body') as string
+        const category = data.get('category') as string
+        const imageUrl = data.get('url') as string
+        
+        addNewPost(userId,title,content , category , imageUrl)
+        prisma.$disconnect()
+    } catch (error) {
+        throw new Error('the post cant be added') 
+    }
+   
    
     revalidatePath('/');
-   redirect('/');
+   
+    redirect('/');
+   
 
 }
 
 export async function deletePost(id : string){
+
     const deleteComments =  prisma.comment.deleteMany({
         where : {
             postId : id
@@ -38,7 +50,13 @@ export async function deletePost(id : string){
         }
     })
     // be carful in transaction other prisma cruds should not have await keyword 
-    const transaction = await prisma.$transaction([deleteComments ,deletePosts ])
+    try {
+        const transaction = await prisma.$transaction([deleteComments ,deletePosts ])
+        prisma.$disconnect()
+    } catch (error) {
+        throw new Error('the post cant be deleted')
+    }
+    
 
    
     revalidatePath('/dashboard/editpost');
@@ -48,20 +66,24 @@ export async function deletePost(id : string){
 
 export async function handleEditPost(id:string , title: string , body : string  ) {
     
-
+  try {
     await prisma.post.update({
         where : {
             id : id
         },
         data :{
           title : title,
-          body : body
+          content : body
         }
     })
     revalidatePath('/' );
-   
+    revalidatePath('/dashboard/editpost' );
    prisma.$disconnect()
     
+  } catch (error) {
+    throw new Error('the post cant be updated')
+  }
+  
 
 }
 
@@ -78,7 +100,7 @@ export async function addComment( formData : FormData){
     prisma.$disconnect()
 }
 
-export async function deleteComment(id : Number){
+export async function deleteComment(id : string){
     await prisma.comment.delete({
         where : {
             id : id

@@ -15,7 +15,11 @@ model Post {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   title     String    @db.VarChar(255)
+  imageUrl  String?
   content   String?
+  category  String?
+  like      Int?
+  view      Int?
   published Boolean   @default(false)
   author    User      @relation(fields: [authorId], references: [id])
   authorId  String
