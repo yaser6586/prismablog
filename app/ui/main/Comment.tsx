@@ -44,8 +44,9 @@ function Comment({
         >
           <div className="collapse-title text-sm font-medium "></div>
           <div className="collapse-content">
-            {comments?.map((cm) => (
+            {comments?.map((cm, i) => (
               <p
+                key={i}
                 className="border-b-2 border-slate-300 py-2 text-right text-xs"
                 dir="rtl"
               >

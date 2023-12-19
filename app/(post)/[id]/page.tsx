@@ -35,11 +35,7 @@ async function postDetail({ params }: { params: { id: string } }) {
         <div>{post?.imageUrl}</div>
 
         <div className="m-auto my-10 w-full text-center">
-          <Comment
-            key={post?.authorId}
-            postId={post?.id as string}
-            comments={comments}
-          />
+          <Comment postId={post?.id as string} comments={comments} />
         </div>
       </div>
     </div>
