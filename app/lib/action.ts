@@ -87,16 +87,16 @@ export async function handleEditPost(id:string , title: string , body : string  
 
 }
 
-export async function addComment( formData : FormData){
-    const PostId = formData.get("postId") as string
-    const comment = formData.get("comment") as string
+export async function addComment( comment : string , postId : string){
+    
     await prisma.comment.create({
         data : {
             comment : comment,
-            postId : PostId
+            postId : postId
         }
     })
-    revalidatePath('/[id]');
+    revalidatePath('/');
+   
     prisma.$disconnect()
 }
 
@@ -111,3 +111,4 @@ export async function deleteComment(id : string){
     
  
 }
+

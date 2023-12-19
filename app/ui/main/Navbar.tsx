@@ -22,34 +22,34 @@ function Navbar() {
     gap-10 min-w-full min-h-[450px]   bg-[url('/abstract.jpg')] bg-cover 
     bg-fixed overflow-x-auto text-slate-50"
     >
-      <div className="topNav flex flex-row w-full justify-between align-middle gap-7 my-4 ">
+      <div className="topNav flex flex-row w-full justify-between  align-middle gap-7 my-4 ">
         <div className="logo pt-0">
           <Link href={"/"}>
             <Image alt="logo" src={"/logo1.png"} width={75} height={75} />
           </Link>
         </div>
         <div className="navContainer hidden md:block">
-          <div className="nav flex flex-row gap-10  ">
+          <div className="nav flex flex-row-reverse gap-10  ">
             <div>
               <Link href={"/"} className="hover:text-black">
-                home
+                صفحه اصلی
               </Link>
             </div>
             <div>
               <Link href={"dashboard"} className="hover:text-black">
-                dashboard
+                داشبورد
               </Link>
             </div>
             <div>
               <button onClick={toggleCatMenu}>
                 <Link href={"#"} className="hover:text-black">
-                  categories
+                  دسته بندی
                 </Link>
               </button>
             </div>
             <div>
               <Link href={"#"} className="hover:text-black">
-                about
+                درباره
               </Link>
             </div>
           </div>
@@ -59,24 +59,24 @@ function Navbar() {
             <div className="nav flex flex-col gap-5 justify-center right-3 top-12 absolute bg-slate-400 backdrop-blur-md bg-opacity-40 w-40 h-44 text-center rounded-xl ">
               <div>
                 <Link href={"/"} className="hover:text-black">
-                  home
+                  صفحه اصلی
                 </Link>
               </div>
               <div>
                 <Link href={"dashboard"} className="hover:text-black">
-                  dashboard
+                  داشبورد
                 </Link>
               </div>
               <div>
                 <button onClick={toggleCatMenu}>
                   <Link href={"#"} className="hover:text-black">
-                    categories
+                    دسته بندی
                   </Link>
                 </button>
               </div>
               <div>
                 <Link href={"#"} className="hover:text-black">
-                  about
+                  درباره
                 </Link>
               </div>
             </div>
@@ -87,31 +87,31 @@ function Navbar() {
           <div
             className="categories absolute grid grid-cols-2 gap-4 bg-slate-400
          backdrop-blur-md bg-opacity-40 min-w-40 min-h-44 text-center justify-center
-         rounded-xl right-44 top-12 md:right-[250px]  lg:right-[500px]  "
+         rounded-xl right-44 top-12 md:right-[450px]  lg:right-[650px]  "
           >
             <div className="m-auto p-3">
               <Link href={"#"} className="hover:text-black">
-                tech
+                تکنولوژی
               </Link>
             </div>
             <div className="m-auto p-3">
               <Link href={"#"} className="hover:text-black">
-                good news
+                خبر خوب
               </Link>
             </div>
             <div className="m-auto p-3">
               <Link href={"#"} className="hover:text-black">
-                movies
+                فیلم
               </Link>
             </div>
             <div className="m-auto p-3">
               <Link href={"#"} className="hover:text-black">
-                gadgets
+                گجت
               </Link>
             </div>
             <div className="m-auto p-3">
               <Link href={"#"} className="hover:text-black">
-                game
+                بازی
               </Link>
             </div>
           </div>
@@ -136,7 +136,7 @@ function Navbar() {
         onClick={() => setShowCatMenu(false)}
       >
         <h1 className="text-5xl text-center font-bold m-auto tracking-tighter ">
-          به <span className="text-yellow-500">وب سایت</span> من خوش آمدید
+          به <span className="text-yellow-500">وب سایت</span> تِک نکست خوش آمدید
         </h1>
         <p className=" m-auto my-2 text-center">
           در اینجا می توانیید از جدیدترین اخبار دنیاس تلنولوژی با خبر شوید{" "}

@@ -5,8 +5,11 @@ import { PiReadCvLogoBold } from "react-icons/pi";
 import { IoEyeOutline } from "react-icons/io5";
 import { GoComment } from "react-icons/go";
 import { AiOutlineLike } from "react-icons/ai";
+import { PostType } from "@/app/lib/definations";
+import { getComment } from "@/app/lib/data";
 
-function Post({ postData }: { postData: PostType }) {
+async function Post({ postData }: { postData: PostType }) {
+  const comments = await getComment(postData.id);
   return (
     <div
       className="post flex flex-col w-[300px] h-[320px] border
@@ -54,7 +57,7 @@ function Post({ postData }: { postData: PostType }) {
           <div>
             <GoComment />
           </div>
-          <div className="text-[10px] mx-[3px]">20</div>
+          <div className="text-[10px] mx-[3px]">{comments.length}</div>
         </div>
         <div className="flex flex-row">
           <div>

@@ -55,3 +55,12 @@ export async function getPost(id : string) {
   }
  
 }
+
+export async function getComment(id : string) {
+  const comments = await prisma.comment.findMany({
+    where: {
+      postId : id
+    }
+  })
+  return comments
+}

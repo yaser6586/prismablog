@@ -1,14 +1,46 @@
 import React from "react";
-import { getPost } from "../../lib/data";
+import { getComment, getPost } from "../../lib/data";
+import { Metadata, ResolvingMetadata } from "next";
+import Comment from "@/app/ui/main/Comment";
+import { Props } from "@/app/lib/definations";
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  // read route params
+  const id = params.id;
+
+  // fetch data
+  const post = await getPost(id);
+
+  // optionally access and extend (rather than replace) parent metadata
+  const previousImages = (await parent).openGraph?.images || [];
+
+  return {
+    title: post?.title,
+  };
+}
 
 async function postDetail({ params }: { params: { id: string } }) {
   const post = await getPost(params.id);
+  const comments = await getComment(post?.id as string);
+
   return (
     <div className="w-full h-screen ">
-      <div className="content flex flex-col justify-center mt-20">
+      <div className="content flex flex-col justify-center mt-20 mx-10 md:mx-24 lg:mx-32">
         <div className="text-3xl mx-auto mt-2">{post?.title}</div>
-        <p className="mx-auto mt-10">{post?.content}</p>
+        <p className="mx-auto mt-10 min-h-screen bg-slate-100 min-w-full text-right p-10">
+          {post?.content}
+        </p>
         <div>{post?.imageUrl}</div>
+
+        <div className="m-auto my-10 w-full text-center">
+          <Comment
+            key={post?.authorId}
+            postId={post?.id as string}
+            comments={comments}
+          />
+        </div>
       </div>
     </div>
   );
