@@ -55,7 +55,7 @@ function Navbar() {
           </div>
         </div>
         {showMenu && (
-          <div className="navMobil md:hidden ">
+          <div className="navMobil block md:hidden ">
             <div className="nav flex flex-col gap-5 justify-center right-3 top-12 absolute bg-slate-400 backdrop-blur-md bg-opacity-40 w-40 h-44 text-center rounded-xl ">
               <div>
                 <Link href={"/"} className="hover:text-black">

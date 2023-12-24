@@ -27,7 +27,7 @@ async function editPost({
        grid-cols-4 pl-2 "
       >
         {posts.map((pt, i) => (
-          <PostTable key={1} postData={pt} index={i} />
+          <PostTable key={i} postData={pt} index={i} />
         ))}
       </div>
       <div className="text-center flex justify-center m-8">

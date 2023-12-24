@@ -36,7 +36,6 @@ async function postDetail({ params }: { params: { id: string } }) {
         <div className="mx-10 mt-2">
           <PostLike postData={post as PostType} likeData={like as LikeType} />
         </div>
-        <div>{post?.imageUrl}</div>
 
         <div className="m-auto my-10 w-full text-center">
           <Comment postId={post?.id as string} comments={comments} />

@@ -78,9 +78,13 @@ export async function getComment(id : string) {
   return comments
 }
 
-export async function getAllComments(){
+export async function getAllComments(page : number , limit : number){
+  const skip = page * limit;
   try {
-    const comments = prisma.comment.findMany({})
+    const comments = prisma.comment.findMany({
+      skip : skip,
+      take : limit
+    })
     return comments
   } catch (error) {
     throw new Error('comment can not be fetched... ' + error)

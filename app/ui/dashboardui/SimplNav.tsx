@@ -31,12 +31,12 @@ function SimpleNave() {
         <div className="navContainer hidden md:block">
           <div className="nav flex flex-row-reverse gap-10  ">
             <div>
-              <Link href={"/"} className="hover:text-black">
+              <Link href="/" className="hover:text-black">
                 صفحه اصلی
               </Link>
             </div>
             <div>
-              <Link href={"dashboard"} className="hover:text-black">
+              <Link href="/dashboard" className="hover:text-black">
                 داشبورد
               </Link>
             </div>

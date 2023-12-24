@@ -14,7 +14,7 @@ async function page() {
             id="category"
             name="category"
           >
-            <option disabled selected>
+            <option disabled defaultValue={"tech"}>
               select one category
             </option>
             <option>tech</option>
@@ -25,7 +25,7 @@ async function page() {
           </select>
         </label>
         <input
-          type="text"
+          type="url"
           name="url"
           id="url"
           placeholder="enter image url address here"
