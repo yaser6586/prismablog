@@ -27,7 +27,7 @@ async function postDetail({ params }: { params: { id: string } }) {
   const comments = await getComment(post?.id as string);
   const like = await getLike(post?.authorId!, post?.id!);
   return (
-    <div className="w-full h-screen ">
+    <div className="w-full min-h-screen ">
       <div className="content flex flex-col justify-center mt-20 mx-10 md:mx-24 lg:mx-32">
         <div className="text-3xl mx-auto mt-2">{post?.title}</div>
         <p className="mx-auto mt-10 min-h-screen bg-slate-100 min-w-full text-right p-10">

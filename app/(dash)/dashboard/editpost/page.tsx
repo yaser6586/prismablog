@@ -13,7 +13,7 @@ async function editPost({
   const limit =
     typeof searchParams.l === "string" ? Number(searchParams.l) : 20;
   const posts: PostType[] = await getAllPosts(page, limit);
-  const max = Math.ceil(posts.length) / limit + 1;
+  const max = Math.ceil(posts.length) / limit;
   return (
     <div className="flex flex-col ">
       <div className="grid grid-cols-4 my-4 ml-2 border-b-[1px] border-slate-600 font-bold relative">

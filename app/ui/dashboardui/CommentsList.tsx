@@ -45,7 +45,12 @@ function CommentsList({
                 </button>
               </div>
               <div>
-                <button className="btn btn-error m-auto">Cancel</button>
+                <button
+                  className="btn btn-error m-auto"
+                  onClick={() => setShowDelMenu(false)}
+                >
+                  Cancel
+                </button>
               </div>
             </div>
           </div>

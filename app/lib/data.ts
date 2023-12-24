@@ -1,21 +1,24 @@
 import { PrismaClient } from "@prisma/client";
+import { resolve } from "path";
 const prisma = new PrismaClient();
 
 export async function getAllPosts(page : number , limit : number) {
+  // await new Promise(resolve  => setTimeout(resolve, 5000))
   const skip = page * limit;
-  try {
+  
      
-    return await prisma.post.findMany({
-      skip : skip,
-      take : limit,
-      orderBy : [
-       { createdAt : 'desc'}
-      ]
-    });
-    
-  } catch (error) {
-    throw new Error('the posts can not be found'  + error)
-  }
+      return  await prisma.post.findMany({
+        skip : skip,
+        take : limit,
+        orderBy : [
+         { createdAt : 'desc'}
+        ]
+      });
+      
+     
+  
+   
+  
   
 }
 
