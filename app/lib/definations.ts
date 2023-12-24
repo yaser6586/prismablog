@@ -6,11 +6,17 @@ export type PostType = {
     content : string | null
     imageUrl? : string | null
     category? : string | null
-    like? :   number | null
+    
     view ? :   number | null
     published: Boolean 
     authorId : string
+    liked? : LikeType[]
   }
+  export type LikeType = {
+    id    : string   
+   userId : string
+   postId : string
+   }
   
   export type ProfileType = {
     id   :  string
@@ -22,6 +28,9 @@ export type PostType = {
     id    :  string
     email  : string 
     name : string | null
+    likes : LikeType[]
+    posts : PostType[]
+    role : "USER" | "ADMIN"
     profile? : ProfileType
   }
   export type CommentType = {

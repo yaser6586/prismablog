@@ -1,8 +1,9 @@
 import React from "react";
-import { getComment, getPost } from "../../lib/data";
+import { getComment, getLike, getPost } from "../../lib/data";
 import { Metadata, ResolvingMetadata } from "next";
 import Comment from "@/app/ui/main/Comment";
-import { Props } from "@/app/lib/definations";
+import { LikeType, PostType, Props } from "@/app/lib/definations";
+import PostLike from "@/app/ui/main/PostLike";
 export async function generateMetadata(
   { params, searchParams }: Props,
   parent: ResolvingMetadata
@@ -24,7 +25,7 @@ export async function generateMetadata(
 async function postDetail({ params }: { params: { id: string } }) {
   const post = await getPost(params.id);
   const comments = await getComment(post?.id as string);
-
+  const like = await getLike(post?.authorId!, post?.id!);
   return (
     <div className="w-full h-screen ">
       <div className="content flex flex-col justify-center mt-20 mx-10 md:mx-24 lg:mx-32">
@@ -32,6 +33,9 @@ async function postDetail({ params }: { params: { id: string } }) {
         <p className="mx-auto mt-10 min-h-screen bg-slate-100 min-w-full text-right p-10">
           {post?.content}
         </p>
+        <div className="mx-10 mt-2">
+          <PostLike postData={post as PostType} likeData={like as LikeType} />
+        </div>
         <div>{post?.imageUrl}</div>
 
         <div className="m-auto my-10 w-full text-center">

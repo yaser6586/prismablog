@@ -25,7 +25,7 @@ function Navbar() {
       <div className="topNav flex flex-row w-full justify-between  align-middle gap-7 my-4 ">
         <div className="logo pt-0">
           <Link href={"/"}>
-            <Image alt="logo" src={"/logo1.png"} width={75} height={75} />
+            <Image alt="logo" src={"/logo1.png"} width={100} height={100} />
           </Link>
         </div>
         <div className="navContainer hidden md:block">
@@ -139,7 +139,7 @@ function Navbar() {
           به <span className="text-yellow-500">وب سایت</span> تِک نکست خوش آمدید
         </h1>
         <p className=" m-auto my-2 text-center">
-          در اینجا می توانیید از جدیدترین اخبار دنیاس تلنولوژی با خبر شوید{" "}
+          در اینجا می توانیید از جدیدترین اخبار دنیای تلنولوژی با خبر شوید{" "}
           <br /> در اینجا همه خبرها خبر خوب است
           <br />
           دنیای گجتها و تکنولوژی

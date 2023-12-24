@@ -2,7 +2,7 @@ import { Inter } from "next/font/google";
 import Navbar from "../ui/main/Navbar";
 import { manrope, notoKufi, nunito } from "../ui/font";
 
-const inter = Inter({ subsets: ["latin"] });
+// const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({
   children,
@@ -10,7 +10,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className={`  ${notoKufi.className}`}>
+    <div className={`${notoKufi.className}`}>
       <Navbar />
       {children}
     </div>

@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { addNewPost, getAllUser } from "./data";
 import { redirect } from "next/navigation";
 import { PrismaClient } from "@prisma/client";
+import { throws } from "assert";
 
 
 
@@ -73,7 +74,8 @@ export async function handleEditPost(id:string , title: string , body : string  
         },
         data :{
           title : title,
-          content : body
+          content : body,
+       
         }
     })
     revalidatePath('/' );
@@ -111,4 +113,50 @@ export async function deleteComment(id : string){
     
  
 }
+ export async function AddViewPost(id : string){
+    try {
+        await prisma.post.update({
+            where : {
+                id : id
+            },
+            data : {
+                view : {increment : 1} 
+            }
+           
+        })
+        revalidatePath('/')
+    } catch (error) {
+        throw new Error("the view can not be increased " + error);
+        
+    }
+ }
 
+ export async function handlePostLike(userId : string , postId :string){
+    try {
+        await prisma.like.create({
+          data : {
+            userId : userId ,
+            postId : postId
+            }
+        })
+        revalidatePath('/')
+    } catch (error) {
+        throw new Error("post can not be liked try again" + error);
+        
+    }
+ }
+
+ export async function handlePostDislike(id : string){
+    try {
+        await prisma.like.deleteMany({
+          where : {
+            postId : id
+            }
+        })
+        revalidatePath('/')
+        
+    } catch (error) {
+        throw new Error("post can not be disliked try again" + error);
+        
+    }
+ }

@@ -27,7 +27,8 @@ function Comment({
           onChange={(e) => setComment(e.target.value)}
         />
         <button
-          className="absolute left-3 top-2"
+          className="absolute left-3 top-2 text-blue-700"
+          title="send comment"
           onClick={() => {
             addComment(comment, postId);
             setComment("");
@@ -42,7 +43,9 @@ function Comment({
           tabIndex={0}
           className="collapse collapse-arrow border border-base-300 bg-base-200"
         >
-          <div className="collapse-title text-sm font-medium "></div>
+          <div className="collapse-title text-sm font-medium ">
+            برای دیدن نظرات اینجا کلیک کنید
+          </div>
           <div className="collapse-content">
             {comments?.map((cm, i) => (
               <p

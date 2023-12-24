@@ -25,7 +25,7 @@ function SimpleNave() {
       <div className="topNav flex flex-row w-full justify-between align-middle gap-7 my-4 ">
         <div className="logo">
           <Link href={"/"}>
-            <Image alt="logo" src={"/logo1.png"} width={50} height={50} />
+            <Image alt="logo" src={"/logo1.png"} width={75} height={75} />
           </Link>
         </div>
         <div className="navContainer hidden md:block">

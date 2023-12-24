@@ -1,10 +1,17 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-export async function getAllPosts() {
+export async function getAllPosts(page : number , limit : number) {
+  const skip = page * limit;
   try {
-    prisma.$connect()
-    return await prisma.post.findMany();
+     
+    return await prisma.post.findMany({
+      skip : skip,
+      take : limit,
+      orderBy : [
+       { createdAt : 'desc'}
+      ]
+    });
     
   } catch (error) {
     throw new Error('the posts can not be found'  + error)
@@ -45,7 +52,10 @@ export async function getPost(id : string) {
     const post = await prisma.post.findUnique({
       where: {
         id: id,
+        
       },
+      
+      
     });
     
     return post;
@@ -63,4 +73,35 @@ export async function getComment(id : string) {
     }
   })
   return comments
+}
+
+export async function getAllComments(){
+  try {
+    const comments = prisma.comment.findMany({})
+    return comments
+  } catch (error) {
+    throw new Error('comment can not be fetched... ' + error)
+  }
+ 
+}
+
+export async function getLike( userId : string , postId : string){
+const like = prisma.like.findFirst({
+  where : {
+    userId : userId ,
+    postId : postId
+  }})
+ return like
+
+
+
+}
+
+export async function likeNumber(id : string){
+  const likesNumber = prisma.like.findMany({
+    where : {
+      postId : id
+    }
+  })
+  return likesNumber
 }

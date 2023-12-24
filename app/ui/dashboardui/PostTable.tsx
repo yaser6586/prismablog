@@ -3,6 +3,7 @@ import React, { use, useState } from "react";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { FaRegEdit } from "react-icons/fa";
 import { deletePost, handleEditPost } from "@/app/lib/action";
+import { PostType } from "@/app/lib/definations";
 
 function PostTable({ postData, index }: { postData: PostType; index: number }) {
   const [showDelDialog, setShowDelDialog] = useState(false);
@@ -12,12 +13,14 @@ function PostTable({ postData, index }: { postData: PostType; index: number }) {
 
   return (
     <>
-      <div className="border-b-2 border-slate-600 py-2">{index + 1}</div>
-      <div className="border-b-2 border-slate-600 py-2">{postData.title}</div>
-      <div className="border-b-2 border-slate-600 py-2">
+      <div className="border-b-[1px] border-slate-600 py-2">{index + 1}</div>
+      <div className="border-b-[1px] border-slate-600 py-2">
+        {postData.title}
+      </div>
+      <div className="border-b-[1px] border-slate-600 py-2">
         {postData.content?.slice(0, 10)}
       </div>
-      <div className="border-b-2 border-slate-600 flex flex-col md:flex-row gap-5 py-2">
+      <div className="border-b-[1px] border-slate-600 flex flex-col md:flex-row gap-5 py-2">
         <button
           className="text-blue-500"
           onClick={() => setShowEditDialog(true)}
