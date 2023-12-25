@@ -112,3 +112,21 @@ export async function likeNumber(id : string){
   })
   return likesNumber
 }
+
+export async function getTopPosts(){
+  try {
+    const top = prisma.post.findMany({
+  
+      take : 6 ,
+      orderBy : [
+        { view : "desc"}
+      ]
+      
+      
+      
+    })
+    return top
+  } catch (error) {
+    
+  }
+}

@@ -4,6 +4,7 @@ import { Metadata, ResolvingMetadata } from "next";
 import Comment from "@/app/ui/main/Comment";
 import { LikeType, PostType, Props } from "@/app/lib/definations";
 import PostLike from "@/app/ui/main/PostLike";
+import Image from "next/image";
 export async function generateMetadata(
   { params, searchParams }: Props,
   parent: ResolvingMetadata
@@ -30,8 +31,26 @@ async function postDetail({ params }: { params: { id: string } }) {
     <div className="w-full min-h-screen ">
       <div className="content flex flex-col justify-center mt-20 mx-10 md:mx-24 lg:mx-32">
         <div className="text-3xl mx-auto mt-2">{post?.title}</div>
-        <p className="mx-auto mt-10 min-h-screen bg-slate-100 min-w-full text-right p-10">
-          {post?.content}
+
+        <p className="mx-auto mt-10 min-h-screen bg-slate-100 min-w-full text-right p-10  ">
+          {post?.imageUrl ? (
+            <Image
+              alt="post image"
+              src={post.imageUrl}
+              width={1366}
+              height={768}
+              className="w-full h-[300px] px-0 mx-0  object-cover"
+            />
+          ) : (
+            <Image
+              alt="post image"
+              src={"/post.jpg"}
+              width={1366}
+              height={768}
+              className="w-full h-[300px] px-0 mx-0  object-cover mb-20"
+            />
+          )}
+          <p className="mt-8"> {post?.content}</p>
         </p>
         <div className="mx-10 mt-2">
           <PostLike postData={post as PostType} likeData={like as LikeType} />

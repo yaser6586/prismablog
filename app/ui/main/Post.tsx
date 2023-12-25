@@ -12,7 +12,7 @@ import PostLinker from "./PostLinker";
 
 async function Post({ postData }: { postData: PostType }) {
   const comments = await getComment(postData.id);
-  const likeNumberData : LikeType[] = await likeNumber(postData.id );
+  const likeNumberData: LikeType[] = await likeNumber(postData.id);
   return (
     <div
       className="post flex flex-col w-[300px] h-[320px] border
@@ -22,17 +22,17 @@ async function Post({ postData }: { postData: PostType }) {
         <Image
           alt="post image"
           src={postData.imageUrl}
-          width={300}
-          height={150}
-          className="m-auto mt-0 w-full max-h-[170px] rounded-t-lg "
+          width={800}
+          height={600}
+          className="m-auto mt-0 w-full max-h-[170px] rounded-t-lg object-cover"
         />
       ) : (
         <Image
           alt="post image"
           src="/post.jpg"
-          width={300}
-          height={150}
-          className="m-auto mt-0 w-full max-h-[170px] rounded-t-lg "
+          width={600}
+          height={450}
+          className="m-auto mt-0 w-full max-h-[170px] rounded-t-lg object-cover "
         />
       )}
 
@@ -48,7 +48,9 @@ async function Post({ postData }: { postData: PostType }) {
           <div>
             <AiOutlineLike />
           </div>
-          <div className="text-[10px] mx-[3px] my-1 ">{likeNumberData.length}</div>
+          <div className="text-[10px] mx-[3px] my-1 ">
+            {likeNumberData.length}
+          </div>
         </div>
         <div className="flex flex-row">
           <div>

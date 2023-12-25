@@ -1,10 +1,13 @@
 import Image from "next/image";
-import { getAllPosts } from "../lib/data";
+import { getAllPosts, getTopPosts } from "../lib/data";
 import Post from "../ui/main/Post";
 import { PostType } from "../lib/definations";
 import Link from "next/link";
 import { FcNext } from "react-icons/fc";
 import { title } from "process";
+import Carousel from "../ui/main/Carousel";
+import { ImFire } from "react-icons/im";
+<ImFire />;
 
 export default async function Home({
   searchParams,
@@ -13,7 +16,9 @@ export default async function Home({
 }) {
   const page = typeof searchParams.p === "string" ? Number(searchParams.p) : 0;
   const limit = typeof searchParams.l === "string" ? Number(searchParams.l) : 8;
+
   const posts: PostType[] = await getAllPosts(page, limit);
+  const topPosts: PostType[] | undefined = await getTopPosts();
 
   const max = Math.ceil(posts.length) / limit;
   return (
@@ -26,7 +31,7 @@ export default async function Home({
           <Post key={pt.id} postData={pt} />
         ))}
       </div>
-      <div className="text-center flex justify-center ">
+      <div className="text-center flex justify-center mb-8 ">
         {page > 0 && (
           <Link
             href={`http://localhost:3000/?p=${page > 1 ? page - 1 : 0}#posts`}
@@ -47,6 +52,17 @@ export default async function Home({
             <FcNext size={30} />
           </Link>
         )}
+      </div>
+      <div className="w-full m-auto text-center border-t-2 ">
+        <div className="flex flex-row justify-center ">
+          <div className="font-bold text-2xl my-11   text-center">
+            پست های برتر
+          </div>
+          <div className="text-red-700 my-10 mx-4 ">
+            <ImFire size={35} />
+          </div>
+        </div>
+        <Carousel postData={topPosts as PostType[]} />
       </div>
     </div>
   );
