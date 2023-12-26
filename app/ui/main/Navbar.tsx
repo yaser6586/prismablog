@@ -136,7 +136,8 @@ function Navbar() {
         onClick={() => setShowCatMenu(false)}
       >
         <h1 className="text-5xl text-center font-bold m-auto tracking-tighter ">
-          به <span className="text-yellow-500">وب سایت</span> تِک نکست خوش آمدید
+          به مجله تکنولوژی<span className="text-yellow-500"> تِک نکست </span>خوش
+          آمدید
         </h1>
         <p className=" m-auto my-2 text-center">
           در اینجا می توانیید از جدیدترین اخبار دنیای تلنولوژی با خبر شوید{" "}

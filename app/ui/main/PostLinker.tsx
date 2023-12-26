@@ -8,9 +8,9 @@ import { PiReadCvLogoBold } from "react-icons/pi";
 function PostLinker({ postData }: { postData: PostType }) {
   return (
     <>
-      <Link href={`/${postData.id}`} className="flex flex-row gap-1 text-white">
+      <Link href={`/${postData.id}`} className="flex flex-row gap-1">
         <button
-          className="  btn  btn-info btn-xs w-auto  m-auto my-2 "
+          className="  btn bg-blue-700 btn-xs w-auto  m-auto my-2  text-white"
           onClick={() => AddViewPost(postData.id)}
         >
           بیشتر

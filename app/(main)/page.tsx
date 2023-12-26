@@ -56,7 +56,7 @@ export default async function Home({
       <div className="w-full m-auto text-center border-t-2 ">
         <div className="flex flex-row justify-center ">
           <div className="font-bold text-2xl my-11   text-center">
-            پست های برتر
+            پست های پربازدید
           </div>
           <div className="text-red-700 my-10 mx-4 ">
             <ImFire size={35} />
