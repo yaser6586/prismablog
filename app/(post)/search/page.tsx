@@ -16,7 +16,7 @@ async function search({
     <div className="w-full min-h-screen text-center relative">
       <div className="w-full text-center py-10">
         <form className="flex justify-center">
-          <div className=" min-w-[600px] relative  ">
+          <div className=" md:min-w-[600px] relative  ">
             <input
               type="text"
               name="search"

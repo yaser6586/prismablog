@@ -25,7 +25,7 @@ export default async function Cm({
           </div>
         </div>{" "}
       </div>
-      <div className=" m-auto  flex basis-11/12 justify-end" dir="rtl">
+      <div className=" m-auto  flex basis-11/12 justify-end mr-3" dir="rtl">
         <div className="m-auto basis-11/12 flex flex-col">
           <h1 className="font-semibold text-blue-600">{user?.name}</h1>
           <div className="mt-1">{cm.comment}</div>

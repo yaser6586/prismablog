@@ -40,10 +40,10 @@ async function postDetail({ params }: { params: { id: string } }) {
   }
   return (
     <div className="w-full min-h-screen ">
-      <div className="content flex flex-col justify-center mt-20 mx-10 md:mx-24 lg:mx-32">
+      <div className="content flex flex-col justify-center mt-20 mx-1 md:mx-24 lg:mx-32">
         <div className={`text-3xl mx-auto mt-2`}>{post?.title}</div>
 
-        <div className="mx-auto mt-10 min-h-screen bg-slate-100 min-w-full text-right p-10  ">
+        <div className="md:mx-auto mt-10 min-h-screen bg-slate-100 min-w-full text-right p-10  ">
           {post?.imageUrl ? (
             <Image
               alt="post image"
