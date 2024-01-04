@@ -6,7 +6,7 @@ import { IoClose } from "react-icons/io5";
 import Image from "next/image";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { PiSignIn } from "react-icons/pi";
-import { NotoKufiArabic } from "@/app/layout";
+// import { NotoKufiArabic } from "@/app/layout";
 
 function SimpleNave() {
   const [showMenu, setShowMenu] = useState(false);
@@ -27,7 +27,7 @@ function SimpleNave() {
     bg-fixed relative text-slate-50 `}
     >
       <div
-        className={` ${NotoKufiArabic.className} topNav flex flex-row w-full justify-between align-middle gap-7 my-4 `}
+        className={` kufi topNav flex flex-row w-full justify-between align-middle gap-7 my-4 `}
       >
         <div className="logo">
           <Link href={"/"}>

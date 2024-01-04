@@ -22,7 +22,7 @@ async function page() {
               select one category
             </option>
             <option>tech</option>
-            <option>good news</option>
+            <option>goodnews</option>
             <option>movie</option>
             <option>gadgets</option>
             <option>game</option>

@@ -3,12 +3,13 @@
 import { revalidatePath } from "next/cache";
 import { addNewPost, getAllUser } from "./data";
 import { redirect } from "next/navigation";
-import { Category, PrismaClient } from "@prisma/client";
+
 import { throws } from "assert";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/auth";
-import { SignUpInputs } from "./definations";
+import { Category, SignUpInputs } from "./definations";
 import {hash} from 'bcrypt'
+import { PrismaClient } from "@prisma/client";
 
 
 

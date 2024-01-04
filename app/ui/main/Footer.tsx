@@ -1,5 +1,5 @@
 import React from "react";
-import { nunito, ptserif, smoochSans } from "../font";
+// import { nunito, ptserif, smoochSans } from "../font";
 import { Inter } from "next/font/google";
 import { FaTelegramPlane } from "react-icons/fa";
 import { FaInstagram } from "react-icons/fa";
@@ -10,7 +10,7 @@ function Footer() {
   return (
     <div className="mt-6 m-auto">
       <footer
-        className={`${inter.className} footer footer-center p-10 bg-base-200 text-base-content rounded `}
+        className={` font-sans footer footer-center p-10 bg-base-200 text-base-content rounded `}
       >
         <nav className="grid grid-flow-col gap-4">
           <a className="link link-hover">About us</a>
@@ -32,7 +32,7 @@ function Footer() {
           </div>
         </nav>
         <aside>
-          <p>Copyright © 2023 - All right reserved by TechNext</p>
+          <p>Copyright © 2023 - All right reserved by TekNext</p>
         </aside>
       </footer>
     </div>

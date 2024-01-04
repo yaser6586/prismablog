@@ -11,3 +11,19 @@
 }
 
 
+@font-face {
+    font-family: "NotoNaskhArabic";
+    src: url("../font/NotoNaskhArabic-VariableFont_wght.ttf");
+}
+
+@font-face {
+    font-family: "NotoKufiArabic";
+    src: url("../font/NotoKufiArabic-VariableFont_wght.ttf");
+}
+
+.kufi {
+    font-family: "NotoKufiArabic";
+}
+.naskh {
+    font-family:  "NotoNaskhArabic";
+}

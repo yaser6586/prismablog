@@ -44,7 +44,8 @@ async function search({
           className="m-auto text-2xl  text-center absolute top-1/3 w-full  "
           dir="rtl"
         >
-          هیچ نتیجه ای برای {searchQuery} پیدا نشد
+          هیچ نتیجه ای برای <span className="text-blue-700">{searchQuery}</span>{" "}
+          پیدا نشد
         </div>
       )}
     </div>

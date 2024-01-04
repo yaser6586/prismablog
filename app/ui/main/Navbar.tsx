@@ -6,7 +6,7 @@ import { IoClose } from "react-icons/io5";
 import Image from "next/image";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { PiSignIn } from "react-icons/pi";
-import { NotoKufiArabic, NotoNaskhArabic } from "@/app/layout";
+// import { NotoKufiArabic, NotoNaskhArabic } from "@/app/layout";
 import { CiSearch } from "react-icons/ci";
 
 function Navbar() {
@@ -23,7 +23,7 @@ function Navbar() {
 
   return (
     <div
-      className={`${NotoKufiArabic.className} relative flex flex-col 
+      className={` kufi relative flex flex-col 
     gap-10 md:w-full min-h-[450px]   bg-[url('/abstract.jpg')] bg-cover 
     bg-fixed overflow-x-auto text-slate-50`}
     >
@@ -153,10 +153,7 @@ function Navbar() {
         )}
 
         <div className="start hidden md:flex ">
-          <form
-            className={`${NotoNaskhArabic.className} relative mt-2`}
-            action={"/search"}
-          >
+          <form className={` naskh relative mt-2`} action={"/search"}>
             <input
               type="text"
               name="search"

@@ -7,7 +7,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { IoClose } from "react-icons/io5";
 import { FaLongArrowAltRight } from "react-icons/fa";
 
-function page() {
+function SignUpPage() {
   const [isSuccessful, setIsSuccessful] = useState(false);
   const {
     register,
@@ -161,4 +161,4 @@ function page() {
   );
 }
 
-export default page;
+export default SignUpPage;
