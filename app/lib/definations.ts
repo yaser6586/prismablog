@@ -5,7 +5,7 @@ export type PostType = {
     title   :  string 
     content : string | null
     imageUrl? : string | null
-    category? : string | null
+    category? :  Category
     
     view ? :   number | null
     published: Boolean 
@@ -29,17 +29,35 @@ export type PostType = {
     email  : string 
     name : string | null
     likes : LikeType[]
+    comment : CommentType[]
     posts : PostType[]
     role : "USER" | "ADMIN"
+    username? : string
+    password? : string
     profile? : ProfileType
   }
   export type CommentType = {
     id  :   string
     comment :string
-   
+    userId : string
     postId : string   
   }
   export type Props = {
     params: { id: string }
     searchParams: { [key: string]: string | string[] | undefined }
   }
+  export type SignUpInputs = {
+    name: string;
+    email: string;
+    username: string;
+    password: string;
+    confirmPassword: string;
+  };
+  export type Category = 'tech' |'goodnews' |'movie'|'gadgets'|'game' | null
+  
+  export type SignInInputs = {
+   
+    username: string;
+    password: string;
+   
+  };

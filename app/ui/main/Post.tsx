@@ -16,7 +16,7 @@ async function Post({ postData }: { postData: PostType }) {
   return (
     <div
       className="post flex flex-col w-[300px] h-[320px] border
-     bg-white justify-center mx-auto my-3 rounded-lg"
+     bg-white justify-center mx-auto my-3 rounded-lg shadow-md shadow-violet-500"
     >
       {postData.imageUrl ? (
         <Image

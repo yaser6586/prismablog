@@ -17,7 +17,7 @@ model Post {
   title     String   @db.VarChar(255)
   imageUrl  String?
   content   String?
-  category  String?
+  category  Category?
 
   view      Int?      @default(0)
   published Boolean   @default(false)
@@ -45,18 +45,33 @@ model Profile {
 }
 
 model User {
-  id      String   @id @default(uuid())
-  email   String   @unique
-  name    String?
-  likes   Like[]
-  posts   Post[]
-  role    Role     @default(USER)
-  profile Profile?
+  id       String    @id @default(uuid())
+  email    String    @unique
+  name     String?
+  likes    Like[]
+  comment  Comment[]
+  posts    Post[]
+  role     Role      @default(USER)
+  username String?   @unique
+  password String?   @unique
+  profile  Profile?
 }
+
+// model PasswordResetToken {
+//   id        String    @id @default(uuid())
+//   token     String    @unique
+//   createdAt DateTime  @default(now())
+//   resetAt   DateTime?
+
+//   user   User   @relation(fields: [userId], references: [id])
+//   userId String
+// }
 
 model Comment {
   id      String @id @default(uuid())
   comment String
+  user    User   @relation(fields: [userId], references: [id])
+  userId  String
   post    Post   @relation(fields: [postId], references: [id])
   postId  String
 }
@@ -64,4 +79,12 @@ model Comment {
 enum Role {
   USER
   ADMIN
+}
+
+enum Category {
+  tech
+  goodnews
+  movie
+  gadgets
+  game
 }

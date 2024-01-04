@@ -4,10 +4,15 @@ import React, { useState } from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { IoClose } from "react-icons/io5";
 import Image from "next/image";
+import { signIn, signOut, useSession } from "next-auth/react";
+import { PiSignIn } from "react-icons/pi";
+import { NotoKufiArabic, NotoNaskhArabic } from "@/app/layout";
+import { CiSearch } from "react-icons/ci";
 
 function Navbar() {
   const [showMenu, setShowMenu] = useState(false);
   const [showCatMenu, setShowCatMenu] = useState(false);
+  const { data: session } = useSession();
 
   function toggleMenu() {
     setShowMenu(!showMenu);
@@ -18,9 +23,9 @@ function Navbar() {
 
   return (
     <div
-      className="container relative flex flex-col 
-    gap-10 min-w-full min-h-[450px]   bg-[url('/abstract.jpg')] bg-cover 
-    bg-fixed overflow-x-auto text-slate-50"
+      className={`${NotoKufiArabic.className} relative flex flex-col 
+    gap-10 md:w-full min-h-[450px]   bg-[url('/abstract.jpg')] bg-cover 
+    bg-fixed overflow-x-auto text-slate-50`}
     >
       <div className="topNav flex flex-row w-full justify-between  align-middle gap-7 my-4 ">
         <div className="logo pt-0">
@@ -28,18 +33,22 @@ function Navbar() {
             <Image alt="logo" src={"/logo1.png"} width={100} height={100} />
           </Link>
         </div>
-        <div className="navContainer hidden md:block">
-          <div className="nav flex flex-row-reverse gap-10  ">
+        <div></div>
+        <div></div>
+        <div className="navContainer hidden md:block ">
+          <div className="nav flex flex-row-reverse gap-10   ">
             <div>
               <Link href={"/"} className="hover:text-black">
                 صفحه اصلی
               </Link>
             </div>
-            <div>
-              <Link href={"dashboard"} className="hover:text-black">
-                داشبورد
-              </Link>
-            </div>
+            {session?.user.role === "ADMIN" && (
+              <div>
+                <Link href={"dashboard"} className="hover:text-black">
+                  داشبورد
+                </Link>
+              </div>
+            )}
             <div>
               <button onClick={toggleCatMenu}>
                 <Link href={"#"} className="hover:text-black">
@@ -48,25 +57,39 @@ function Navbar() {
               </button>
             </div>
             <div>
+              <Link href={"search"} className="hover:text-black">
+                جستجو
+              </Link>
+            </div>
+            <div>
               <Link href={"#"} className="hover:text-black">
                 درباره
               </Link>
             </div>
+            {!session && (
+              <div>
+                <Link href={"signup"} className="hover:text-black">
+                  عضویت در سایت
+                </Link>
+              </div>
+            )}
           </div>
         </div>
         {showMenu && (
           <div className="navMobil block md:hidden ">
-            <div className="nav flex flex-col gap-5 justify-center right-3 top-12 absolute bg-slate-400 backdrop-blur-md bg-opacity-40 w-40 h-44 text-center rounded-xl ">
+            <div className="nav flex flex-col gap-5 justify-center right-3 top-12 absolute bg-slate-400 backdrop-blur-md bg-opacity-40 w-40 h-56 text-center rounded-xl ">
               <div>
                 <Link href={"/"} className="hover:text-black">
                   صفحه اصلی
                 </Link>
               </div>
-              <div>
-                <Link href={"dashboard"} className="hover:text-black">
-                  داشبورد
-                </Link>
-              </div>
+              {session?.user.role === "ADMIN" && (
+                <div>
+                  <Link href={"dashboard"} className="hover:text-black">
+                    داشبورد
+                  </Link>
+                </div>
+              )}
               <div>
                 <button onClick={toggleCatMenu}>
                   <Link href={"#"} className="hover:text-black">
@@ -75,10 +98,22 @@ function Navbar() {
                 </button>
               </div>
               <div>
+                <Link href={"search"} className="hover:text-black">
+                  جستجو
+                </Link>
+              </div>
+              <div>
                 <Link href={"#"} className="hover:text-black">
                   درباره
                 </Link>
               </div>
+              {!session && (
+                <div>
+                  <Link href={"signup"} className="hover:text-black">
+                    عضویت در سایت
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -87,38 +122,107 @@ function Navbar() {
           <div
             className="categories absolute grid grid-cols-2 gap-4 bg-slate-400
          backdrop-blur-md bg-opacity-40 min-w-40 min-h-44 text-center justify-center
-         rounded-xl right-44 top-12 md:right-[450px]  lg:right-[650px]  "
+         rounded-xl right-44 top-12 md:right-[350px]  lg:right-[550px]  "
           >
             <div className="m-auto p-3">
-              <Link href={"#"} className="hover:text-black">
+              <Link href={"/categories/tech"} className="hover:text-black">
                 تکنولوژی
               </Link>
             </div>
             <div className="m-auto p-3">
-              <Link href={"#"} className="hover:text-black">
+              <Link href={"/categories/goodnews"} className="hover:text-black">
                 خبر خوب
               </Link>
             </div>
             <div className="m-auto p-3">
-              <Link href={"#"} className="hover:text-black">
+              <Link href={"/categories/movie"} className="hover:text-black">
                 فیلم
               </Link>
             </div>
             <div className="m-auto p-3">
-              <Link href={"#"} className="hover:text-black">
+              <Link href={"/categories/gadgets"} className="hover:text-black">
                 گجت
               </Link>
             </div>
             <div className="m-auto p-3">
-              <Link href={"#"} className="hover:text-black">
+              <Link href={"/categories/game"} className="hover:text-black">
                 بازی
               </Link>
             </div>
           </div>
         )}
 
-        <div className="start hidden md:block">
-          <button>get started</button>
+        <div className="start hidden md:flex ">
+          <form
+            className={`${NotoNaskhArabic.className} relative mt-2`}
+            action={"/search"}
+          >
+            <input
+              type="text"
+              name="search"
+              id="search"
+              placeholder="جستجو در مطالب"
+              className="input input-ghost w-full max-w-[300px] bg-slate-100"
+              maxLength={27}
+              dir="rtl"
+            />
+            <button
+              type="submit"
+              className="absolute left-1 top-2 text-blue-700 "
+            >
+              <CiSearch size={35} />
+            </button>
+          </form>
+          {session ? (
+            <>
+              <div className="dropdown dropdown-end">
+                <div
+                  tabIndex={0}
+                  role="button"
+                  className="btn btn-ghost btn-circle mx-2 avatar mt-2 "
+                  title={`${session?.user.name}`}
+                >
+                  <div className="w-10 rounded-full">
+                    <div className="avatar placeholder">
+                      <div className="bg-blue-900 text-neutral-content rounded-full w-12 flex flex-col justify-center align-middle">
+                        <span className="text-[10px] mr-[6px] mb-1">
+                          {session?.user.name?.slice(0, 2).toLocaleUpperCase()}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <ul
+                  tabIndex={0}
+                  className="menu menu-sm dropdown-content mt-3 mx-t z-[1] p-2 shadow bg-slate-400 bg-opacity-40 backdrop-blur-md rounded-box w-52 "
+                >
+                  <li>
+                    <Link href={""} className="justify-end">
+                      پروفایل
+                    </Link>
+                  </li>
+
+                  <li>
+                    <Link
+                      className="justify-end"
+                      href={""}
+                      onClick={() => signOut()}
+                    >
+                      خروج
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+            </>
+          ) : (
+            <button
+              className="pr-3 mb-9 mx-5"
+              onClick={() => signIn()}
+              title="ورود به سایت"
+            >
+              <PiSignIn size={35} />
+            </button>
+          )}
         </div>
 
         <div
@@ -130,16 +234,72 @@ function Navbar() {
         >
           {!showMenu ? <RxHamburgerMenu size={30} /> : <IoClose size={30} />}
         </div>
+
+        <div
+          className="start absolute top-2 right-[45vw] md:hidden "
+          onClick={() => {
+            setShowCatMenu(false);
+            setShowMenu(false);
+          }}
+        >
+          {session !== null ? (
+            <>
+              <div className="dropdown dropdown-end">
+                <div
+                  tabIndex={0}
+                  role="button"
+                  className="btn btn-ghost btn-circle avatar"
+                >
+                  <div className="w-10 rounded-full">
+                    <div className="avatar placeholder">
+                      <div className="bg-blue-900 text-neutral-content rounded-full w-12 flex flex-col justify-center align-middle">
+                        <span className="text-[10px] mr-[6px] mb-1">
+                          {session?.user.name?.slice(0, 2).toLocaleUpperCase()}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <ul
+                  tabIndex={0}
+                  className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-slate-400 bg-opacity-40 backdrop-blur-md rounded-box w-52 "
+                >
+                  <li>
+                    <Link href={""} className="justify-between">
+                      پروفایل
+                    </Link>
+                  </li>
+
+                  <li>
+                    <Link href={""} onClick={() => signOut()}>
+                      خروج
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+            </>
+          ) : (
+            <button
+              className="pr-3"
+              onClick={() => signIn()}
+              title="ورود به سایت"
+            >
+              <PiSignIn size={35} />
+            </button>
+          )}
+        </div>
       </div>
       <div
         className="flex flex-col justify-center "
         onClick={() => setShowCatMenu(false)}
       >
-        <h1 className="text-5xl text-center font-bold m-auto tracking-tighter ">
+        <h1
+          className={`  text-5xl text-center font-bold m-auto tracking-tighter`}
+        >
           به مجله تکنولوژی<span className="text-yellow-500"> تِک نکست </span>خوش
           آمدید
         </h1>
-        <p className=" m-auto my-2 text-center">
+        <p className={` m-auto my-2 text-center`}>
           در اینجا می توانیید از جدیدترین اخبار دنیای تلنولوژی با خبر شوید{" "}
           <br /> در اینجا همه خبرها خبر خوب است
           <br />

@@ -1,6 +1,7 @@
 "use client";
 import { handlePostDislike, handlePostLike } from "@/app/lib/action";
 import { LikeType, PostType } from "@/app/lib/definations";
+import { useSession } from "next-auth/react";
 import { transform } from "next/dist/build/swc";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { SlDislike } from "react-icons/sl";
@@ -20,7 +21,9 @@ function PostLike({
     } else {
       setIsLiked(true);
     }
-  });
+  }, [likeData]);
+
+  const { data: session } = useSession();
 
   return (
     <div className="flex justify-center">
@@ -29,7 +32,7 @@ function PostLike({
           className="text-blue-700"
           title="می پسندم"
           onClick={() => {
-            handlePostLike(postData.authorId, postData.id);
+            handlePostLike(session?.user.userId as string, postData.id);
             setIsLiked(true);
           }}
         >

@@ -1,7 +1,11 @@
 import { Children } from "react";
 import { addPost } from "../../../lib/action";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
 
 async function page() {
+  const user = await getServerSession(authOptions);
+
   return (
     <div className="flex flex-col justify-center m-14  text-center">
       <form action={addPost} className="m-auto">
@@ -38,6 +42,15 @@ async function page() {
           name="title"
           className="input input-bordered input-md w-full max-w-xs m-4 min-w-full"
           required
+        />
+        <input
+          type="text"
+          placeholder="Type title of post"
+          id="userId"
+          name="userId"
+          className="input input-bordered input-md w-full max-w-xs m-4 min-w-full"
+          value={user?.user.userId}
+          hidden
         />
         <textarea
           placeholder="body of post"

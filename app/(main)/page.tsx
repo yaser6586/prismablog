@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { getAllPosts, getTopPosts } from "../lib/data";
+import { checkUser, getAllPosts, getTopPosts } from "../lib/data";
 import Post from "../ui/main/Post";
 import { PostType } from "../lib/definations";
 import Link from "next/link";
@@ -7,6 +7,9 @@ import { FcNext } from "react-icons/fc";
 import { title } from "process";
 import Carousel from "../ui/main/Carousel";
 import { ImFire } from "react-icons/im";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/auth";
+
 <ImFire />;
 
 export default async function Home({
@@ -16,9 +19,9 @@ export default async function Home({
 }) {
   const page = typeof searchParams.p === "string" ? Number(searchParams.p) : 0;
   const limit = typeof searchParams.l === "string" ? Number(searchParams.l) : 8;
-
   const posts: PostType[] = await getAllPosts(page, limit);
   const topPosts: PostType[] | undefined = await getTopPosts();
+  const session = await getServerSession(authOptions);
 
   const max = Math.ceil(posts.length) / limit;
   return (
@@ -26,6 +29,7 @@ export default async function Home({
       <div
         className="grid grid-cols-1 justify-center md:grid-cols-2 lg:grid-cols-4 min-h-screen p-3 "
         id="posts"
+        dir="rtl"
       >
         {posts.map((pt: PostType) => (
           <Post key={pt.id} postData={pt} />
@@ -54,11 +58,11 @@ export default async function Home({
         )}
       </div>
       <div className="w-full m-auto text-center border-t-2 ">
-        <div className="flex flex-row justify-center ">
-          <div className="font-bold text-2xl my-11   text-center">
+        <div className="flex flex-row justify-center">
+          <div className="font-bold text-2xl my-11   text-center border-2 rounded-full p-2">
             پست های پربازدید
           </div>
-          <div className="text-red-700 my-10 mx-4 ">
+          <div className="text-red-700 my-14 mx-4 ">
             <ImFire size={35} />
           </div>
         </div>

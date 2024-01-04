@@ -3,24 +3,34 @@
 import { revalidatePath } from "next/cache";
 import { addNewPost, getAllUser } from "./data";
 import { redirect } from "next/navigation";
-import { PrismaClient } from "@prisma/client";
+import { Category, PrismaClient } from "@prisma/client";
 import { throws } from "assert";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/auth";
+import { SignUpInputs } from "./definations";
+import {hash} from 'bcrypt'
 
 
 
 
 
 
-const prisma = new PrismaClient()
+
+const globalForPrisma = globalThis as unknown as { prisma: PrismaClient }
+
+const prisma =
+  globalForPrisma.prisma || new PrismaClient()
+
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
 
 export async function addPost(data : FormData){
+    const session = await getServerSession(authOptions)
+    
     try {
-        const users = await getAllUser();
-        
-        const userId = users[1].id;
+        const  userId = session?.user.userId as string
         const title = data.get("title") as string
         const content = data.get('body') as string
-        const category = data.get('category') as string
+        const category = data.get('category') as Category
         const imageUrl = data.get('url') as string
         
         addNewPost(userId,title,content , category , imageUrl)
@@ -31,8 +41,7 @@ export async function addPost(data : FormData){
    
    
     revalidatePath('/');
-   
-    redirect('/');
+    redirect('/#posts');
    
 
 }
@@ -89,17 +98,27 @@ export async function handleEditPost(id:string , title: string , body : string  
 
 }
 
-export async function addComment( comment : string , postId : string){
-    
+export async function addComment( commentData : FormData){
+    const comment = commentData.get("comment") as string
+    const postId = commentData.get("postId") as string
+    const userId =  commentData.get("userId") as string
+    console.log(userId)
+   try {
+  
     await prisma.comment.create({
         data : {
             comment : comment,
-            postId : postId
+            postId : postId,
+            userId :  userId
         }
     })
     revalidatePath('/');
    
     prisma.$disconnect()
+    
+   } catch (error) {
+    console.log(error)
+   } 
 }
 
 export async function deleteComment(id : string){
@@ -109,6 +128,7 @@ export async function deleteComment(id : string){
         }
     })
     revalidatePath('/dashboard/editcomments');
+    revalidatePath('/[id]');
     revalidatePath('/');
     
  
@@ -160,3 +180,35 @@ export async function deleteComment(id : string){
         
     }
  }
+
+ export async function createNewUser ( data : SignUpInputs) {
+    try {
+   const hashPass = await hash(data.password,6)
+   const newUser =   await prisma.user.create({
+  
+        data : {
+            name : data.name ,
+            email : data.email,
+            username : data.username,
+            password : hashPass
+        }
+      })
+    
+    return newUser
+    } catch (error) {
+        
+        console.log(error)
+        
+    }
+ }
+
+//  export async function userDeleteOwnComment(commentId : string) {
+//     try {
+//        console.log(commentId)
+            
+        
+//     } catch (error) {
+//        console.log(error) 
+//     }
+  
+//  }

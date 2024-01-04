@@ -1,63 +1,92 @@
-"use client";
 import { addComment } from "@/app/lib/action";
-import { getComment } from "@/app/lib/data";
+
 import { CommentType } from "@/app/lib/definations";
-import { stringify } from "querystring";
+
 import React, { useState } from "react";
 import { BsSendArrowUp } from "react-icons/bs";
+import Cm from "./Cm";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
+import Link from "next/link";
 
-function Comment({
+async function Comment({
   postId,
   comments,
 }: {
   postId: string;
   comments: CommentType[];
 }) {
-  const [comment, setComment] = useState("");
+  const session = await getServerSession(authOptions);
 
   return (
-    <div className="commentContainer w-full h-fit flex flex-col justify-center gap-4">
-      <div className="relative ">
-        <input
-          type="text"
-          placeholder="نظر خود را اینجا بنوسید"
-          className="input input-bordered input-md w-full"
-          dir="rtl"
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-        />
-        <button
-          className="absolute left-3 top-2 text-blue-700"
-          title="send comment"
-          onClick={() => {
-            addComment(comment, postId);
-            setComment("");
-          }}
-        >
-          <BsSendArrowUp size={35} style={{ transform: "rotate(-90deg)" }} />
-        </button>
-      </div>
+    <div className="commentContainer w-full h-fit flex flex-col justify-center gap-1 ">
+      <form action={addComment}>
+        <div className="relative ">
+          {session ? (
+            <input
+              type="text"
+              name="comment"
+              id="comment"
+              placeholder="نظر خود را اینجا بنوسید"
+              className="input input-bordered input-md w-full overflow-x-scroll pl-20"
+              dir="rtl"
+              maxLength={200}
+            />
+          ) : (
+            <input
+              type="text"
+              name="comment"
+              placeholder="برای ارسال کامنت باید به سایت وارد شوید"
+              className="input input-bordered input-md w-full"
+              dir="rtl"
+            />
+          )}
 
-      <div className=" m-auto w-full">
-        <div
-          tabIndex={0}
-          className="collapse collapse-arrow border border-base-300 bg-base-200"
-        >
-          <div className="collapse-title text-sm font-medium ">
-            برای دیدن نظرات اینجا کلیک کنید
-          </div>
-          <div className="collapse-content">
-            {comments?.map((cm, i) => (
-              <p
-                key={i}
-                className="border-b-2 border-slate-300 py-2 text-right text-xs"
-                dir="rtl"
-              >
-                {cm.comment}
-              </p>
-            ))}
-          </div>
+          <input
+            type="text"
+            id="userId"
+            name="userId"
+            className="hidden"
+            value={session?.user.userId}
+          />
+          <input
+            type="text"
+            id="postId"
+            name="postId"
+            className="hidden"
+            value={postId}
+          />
+          {session ? (
+            <button
+              type="submit"
+              className="absolute left-3 top-2 text-blue-700"
+              title="send comment"
+            >
+              <BsSendArrowUp
+                size={35}
+                style={{ transform: "rotate(-90deg)" }}
+              />
+            </button>
+          ) : (
+            <Link
+              href={"/api/auth/signin"}
+              className="absolute left-3 top-2 text-blue-700 btn btn-info btn-sm"
+              title="برای ارسال کامنت باید به سایت وارد شوید"
+            >
+              ورود به سایت
+            </Link>
+          )}
         </div>
+      </form>
+      <div className="mt-10">
+        {comments?.map((cm: CommentType, i: number) => (
+          <Cm
+            key={i}
+            cm={cm}
+            index={i}
+            userId={session?.user.userId as string}
+          />
+        ))}
       </div>
     </div>
   );

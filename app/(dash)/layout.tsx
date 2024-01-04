@@ -3,28 +3,28 @@ import React from "react";
 import { TiFolderAdd } from "react-icons/ti";
 import { BiEdit, BiCommentError } from "react-icons/bi";
 import { FaRegListAlt } from "react-icons/fa";
-import { manrope, nunito, ptserif, smoochSans } from "../ui/font";
+// import { manrope, notoKufi, nunito, ptserif, smoochSans } from "../ui/font";
 import SimpleNave from "../ui/dashboardui/SimplNav";
 import { PiUserListBold } from "react-icons/pi";
 
 function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="w-full ">
-      <SimpleNave />
-      <div className="flex flex-col md:flex-row ">
-        <div className="sidbar basis-1/4 bg-[url('/abstract.jpg')] bg-cover min-h-screen  text-slate-200 hidden md:block ">
-          <div
-            className={`${smoochSans.className} flex flex-col justify-center `}
-          >
+      <div>
+        <SimpleNave />
+      </div>
+      <div className="flex flex-col md:flex-row font-sans">
+        <div className="sidbar basis-1/4   min-h-screen  text-blue-800 hidden md:block ">
+          <div className={` flex flex-col justify-center  `}>
             <Link
               href="/dashboard/addpost"
-              className="m-auto p-4 hover:bg-slate-400 w-full text-center "
+              className="m-auto p-4 w-full text-center  hover:text-black "
             >
               <div className="flex flex-row justify-center">
                 <div className="basis-1/3  pl-16">
-                  <TiFolderAdd size={35} />
+                  <TiFolderAdd size={30} />
                 </div>
-                <div className="basis-2/3 text-2xl text-left font-bold">
+                <div className="basis-2/3 text-xl text-left tracking-tighter ">
                   {" "}
                   new post
                 </div>
@@ -33,13 +33,13 @@ function Layout({ children }: { children: React.ReactNode }) {
 
             <Link
               href="/dashboard/editpost"
-              className="m-auto p-4 hover:bg-slate-400 w-full text-center"
+              className="m-auto p-4  hover:text-black w-full text-center"
             >
               <div className="flex flex-row justify-center">
                 <div className="basis-1/3  pl-16">
-                  <FaRegListAlt size={30} />
+                  <FaRegListAlt size={25} />
                 </div>
-                <div className="basis-2/3 text-2xl text-left font-bold">
+                <div className="basis-2/3 text-xl text-left tracking-tighter">
                   {" "}
                   edit post
                 </div>
@@ -48,13 +48,13 @@ function Layout({ children }: { children: React.ReactNode }) {
 
             <Link
               href="/dashboard/editcomments"
-              className="m-auto p-4 hover:bg-slate-400 w-full text-center"
+              className="m-auto p-4  hover:text-black w-full text-center"
             >
               <div className="flex flex-row justify-center">
                 <div className="basis-1/3  pl-16">
-                  <BiCommentError size={30} />
+                  <BiCommentError size={25} />
                 </div>
-                <div className="basis-2/3 text-2xl text-left font-bold">
+                <div className="basis-2/3 text-xl text-left tracking-tighter">
                   {" "}
                   comments
                 </div>
@@ -63,13 +63,13 @@ function Layout({ children }: { children: React.ReactNode }) {
 
             <Link
               href={"#"}
-              className="m-auto p-4 hover:bg-slate-400 w-full text-center"
+              className="m-auto p-4  hover:text-black w-full text-center"
             >
               <div className="flex flex-row justify-center">
-                <div className="basis-1/3  pl-16">
-                  <PiUserListBold size={30} />
+                <div className="basis-1/3  pl-16 mt-1">
+                  <PiUserListBold size={25} />
                 </div>
-                <div className="basis-2/3 text-2xl text-left font-bold">
+                <div className="basis-2/3 text-xl tracking-tighter text-left ">
                   {" "}
                   list of users
                 </div>
