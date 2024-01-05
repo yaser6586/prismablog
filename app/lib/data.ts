@@ -212,3 +212,4 @@ export async function searchPost( query : string ) {
     
   }
 }
+

@@ -7,11 +7,18 @@ import { redirect } from "next/navigation";
 import { throws } from "assert";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/auth";
-import { Category, SignUpInputs } from "./definations";
+import { Category, RestPassInputs, SignUpInputs } from "./definations";
 import {hash} from 'bcrypt'
 import { PrismaClient } from "@prisma/client";
+import { error } from "console";
+import { randomUUID } from "crypto";
+const nodemailer = require("nodemailer");
 
-
+ 
+const MAIL_HOST = process.env.MAIL_HOST;
+const MAIL_PORT = process.env.MAIL_PORT;
+const MAIL_USER = process.env.MAIL_USER;
+const MAIL_PASSWORD = process.env.MAIL_PASSWORD;
 
 
 
@@ -205,13 +212,112 @@ export async function deleteComment(id : string){
     }
  }
 
-//  export async function userDeleteOwnComment(commentId : string) {
-//     try {
-//        console.log(commentId)
-            
+export async function resetPasswordEmail( data : FormData) {
+
+    const email = data.get("email")
+    if( !email || typeof email !== "string" ){
+        return {
+            error : 'فرمت اشتباه ایمیل'
+        }
+    }
+    const user =  await prisma.user.findUnique({
+        where : {
+            email : email
+        }
+    })
+    if(!user) {
+        return {
+             error : 'کاربری با این ایمیل پیدا نشد لطفا ایمیل را بازبینی کنید'
+        }
+    }
+    const token = await prisma.passwordResetToken.create({
+        data: {
+          userId: user.id,
+          token: `${randomUUID()}${randomUUID()}`.replace(/-/g, ''),
+        },
+      })
+
+
+      const transporter = nodemailer.createTransport({
+        host: MAIL_HOST,
+        port: MAIL_PORT,
+        tls: true,
+        auth: {
+          user: MAIL_USER,
+          pass: MAIL_PASSWORD,
+        }
+      });
+      
+      transporter.sendMail({
+        from: 'info@teknext.ir',
+        to: user.email,
+        subject: 'Test Email Subject',
+        html: ` <h1 dir="rtl" >سلام ${user.name}</h1> ،
+       <p dir='rtl'>
+            اخیرا کسی تقاضای ریست رمز کاربری شما را برای ما فرستاده است.
+            اگر شما نبوده اید این ایمیل را نادیده بگیرید و اگر شما این در خواست را فرستاده اید از طریق اینک زیر پس.رد خو را ریست کنید
+           
+       </p> </br>
+    <a dir="rtl" href=https://teknext.ir/passwordReset/${token.token}> https://teknext.ir/passwordReset/${token.token}</a> 
+    
+    </br>
+    
+    واحد امنیت سایت تک نکست`
+      })
+        .then(() => {console.log('OK, Email has been sent.')
+    })
+        .catch(console.error);
+
+        redirect("/resetemailsent")
+}
+
+
+export async function restPassFinalStep( data : RestPassInputs) {
+
+   
+   
+    const passwordResetToken = await prisma.passwordResetToken.findUnique({
+        where : {
+            token : data.token ,
+            createdAt: { gt: new Date(Date.now() - 1000 * 60 * 60 * 4) },
+            resetAt : null
+        }
+    })
+
+    if (!passwordResetToken) {
         
-//     } catch (error) {
-//        console.log(error) 
-//     }
-  
-//  }
+        return {
+          error:
+            'این لینک منقضی شده و یا اشتباه است لطفا دوباره درخواست ارسال لینک ریست پسورد را انجام کنید',
+        }
+      }
+   const encrypted = await hash(data.password, 6)
+
+  const updateUser = prisma.user.update({
+    where: { id: passwordResetToken.userId },
+    data: {
+      password: encrypted,
+    },
+  })
+
+  const updateToken = prisma.passwordResetToken.update({
+    where: {
+      id: passwordResetToken.id,
+    },
+    data: {
+      resetAt: new Date(),
+    },
+  })
+
+  try {
+    await prisma.$transaction([updateUser, updateToken])
+  } catch (err) {
+    console.error(err)
+    return {
+      error: `خطایی رخ داده است لطفا دوباره امتحان کنید ،درصورت رفع نشدن خطا با پشتیبانی سایت تماس بگیرید`
+    }
+  }
+
+  redirect("/resetSuccessful")
+
+}

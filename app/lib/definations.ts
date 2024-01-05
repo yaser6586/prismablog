@@ -61,3 +61,9 @@ export type PostType = {
     password: string;
    
   };
+
+  export type RestPassInputs = {
+    password : string
+    confirm : string
+    token : string
+  }
