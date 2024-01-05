@@ -37,19 +37,14 @@ export default async function Home({
       </div>
       <div className="text-center flex justify-center mb-8 ">
         {page > 0 && (
-          <Link
-            href={`http://localhost:3000/?p=${page > 1 ? page - 1 : 0}#posts`}
-            title="prev page"
-          >
+          <Link href={`/?p=${page > 1 ? page - 1 : 0}#posts`} title="prev page">
             <FcNext size={30} style={{ transform: "rotate(-180deg)" }} />
           </Link>
         )}
         <h3 className="mt-2 mx-8">{page + 1} صفحه</h3>
         {page < max && (
           <Link
-            href={`http://localhost:3000/?p=${
-              page < max ? page + 1 : max
-            }#posts`}
+            href={`/?p=${page < max ? page + 1 : max}#posts`}
             title="next page"
             // className="btn btn-outline btn-accent m-5 "
           >

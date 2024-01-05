@@ -12,7 +12,7 @@ function CommentsList({
   index: number;
 }) {
   const [showDelMenu, setShowDelMenu] = useState(false);
-  console.log(commentData);
+
   return (
     <>
       <div className="grid grid-cols-3 p-3 border-slate-400 border-b-[1px]">

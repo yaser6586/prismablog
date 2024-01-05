@@ -68,6 +68,7 @@ function PostTable({ postData, index }: { postData: PostType; index: number }) {
                 required
                 value={title as string}
                 onChange={(e) => setTitle(e.target.value)}
+                dir="rtl"
               />
             </div>
             <div className="text-center">
@@ -77,6 +78,7 @@ function PostTable({ postData, index }: { postData: PostType; index: number }) {
                 required
                 value={body as string}
                 onChange={(e) => setBody(e.target.value)}
+                dir="rtl"
               ></textarea>
             </div>
             <div className="text-center m-auto">

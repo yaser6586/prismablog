@@ -30,8 +30,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fa">
-      <body className="naskh">
+    <html>
+      <body>
         <Provider>
           {children}
           <Footer />

@@ -13,7 +13,7 @@ function Layout({ children }: { children: React.ReactNode }) {
       <div>
         <SimpleNave />
       </div>
-      <div className="flex flex-col md:flex-row font-sans">
+      <div lang="fa" className="flex flex-col md:flex-row font-sans">
         <div className="sidbar basis-1/4   min-h-screen  text-blue-800 hidden md:block ">
           <div className={` flex flex-col justify-center  `}>
             <Link
@@ -92,7 +92,7 @@ function Layout({ children }: { children: React.ReactNode }) {
             </Link>
           </button>
           <button className="btn btn-info rounded-b-xl rounded-t-none text-slate-50">
-            <Link href={""} title="comments">
+            <Link href={"/dashboard/editcomments"} title="comments">
               <BiCommentError size={30} />
             </Link>
           </button>

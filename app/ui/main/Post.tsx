@@ -36,9 +36,11 @@ async function Post({ postData }: { postData: PostType }) {
         />
       )}
 
-      <div className={`text-l m-auto font-bold`}>{postData.title}</div>
-      <p className={`m-auto text-xs justify-end `}>
-        ...{postData.content?.slice(0, 35)}
+      <div className={`text-l m-auto font-bold mx-2`} dir="rtl">
+        {postData.title}
+      </div>
+      <p className={`m-auto text-xs justify-end `} dir="rtl">
+        {postData.content?.slice(0, 45)}...
       </p>
 
       <PostLinker postData={postData} />

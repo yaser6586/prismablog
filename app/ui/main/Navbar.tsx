@@ -153,7 +153,7 @@ function Navbar() {
         )}
 
         <div className="start hidden md:flex ">
-          <form className={` naskh relative mt-2`} action={"/search"}>
+          <form className={` relative mt-2`} action={"/search"}>
             <input
               type="text"
               name="search"

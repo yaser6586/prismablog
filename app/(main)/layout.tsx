@@ -14,7 +14,7 @@ export default function RootLayout({
       <div>
         <Navbar />
       </div>
-      {children}
+      <div lang="fa"> {children}</div>
     </div>
   );
 }

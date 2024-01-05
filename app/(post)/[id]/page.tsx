@@ -8,6 +8,7 @@ import Image from "next/image";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
 import { redirect } from "next/navigation";
+import { Content } from "next/font/google";
 
 // import { notoKufi } from "@/app/ui/font";
 
@@ -61,7 +62,13 @@ async function postDetail({ params }: { params: { id: string } }) {
               className="w-full h-[300px] px-0 mx-0  object-cover mb-20"
             />
           )}
-          <p className="mt-8"> {post?.content}</p>
+          <p
+            className="mt-8 min-h-screen font-thin text-lg whitespace-pre-wrap leading-8 "
+            dir="rtl"
+          >
+            {" "}
+            {post?.content}
+          </p>
         </div>
         {session && (
           <div className="mx-10 mt-2">

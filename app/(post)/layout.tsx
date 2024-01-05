@@ -4,10 +4,9 @@ import SimpleNave from "../ui/dashboardui/SimplNav";
 function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="w-full ">
-      <div>
-        <SimpleNave />
-      </div>
-      {children}
+      <SimpleNave />
+
+      <div lang="fa"> {children}</div>
     </div>
   );
 }

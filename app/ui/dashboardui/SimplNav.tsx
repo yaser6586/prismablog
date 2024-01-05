@@ -56,7 +56,7 @@ function SimpleNave() {
               </button>
             </div>
             <div>
-              <Link href={"search"} className="hover:text-black">
+              <Link href={"/search"} className="hover:text-black">
                 جستجو
               </Link>
             </div>
@@ -67,7 +67,7 @@ function SimpleNave() {
             </div>
             {!session && (
               <div>
-                <Link href={"signup"} className="hover:text-black">
+                <Link href={"/signup"} className="hover:text-black">
                   عضویت در سایت
                 </Link>
               </div>
@@ -84,7 +84,7 @@ function SimpleNave() {
               </div>
               {session && session.user.role === "ADMIN" && (
                 <div>
-                  <Link href={"dashboard"} className="hover:text-black">
+                  <Link href={"/dashboard"} className="hover:text-black">
                     داشبورد
                   </Link>
                 </div>
@@ -100,7 +100,7 @@ function SimpleNave() {
                 </button>
               </div>
               <div>
-                <Link href={"search"} className="hover:text-black">
+                <Link href={"/search"} className="hover:text-black">
                   جستجو
                 </Link>
               </div>
@@ -111,7 +111,7 @@ function SimpleNave() {
               </div>
               {!session && (
                 <div>
-                  <Link href={"signup"} className="hover:text-black">
+                  <Link href={"/signup"} className="hover:text-black">
                     عضویت در سایت
                   </Link>
                 </div>

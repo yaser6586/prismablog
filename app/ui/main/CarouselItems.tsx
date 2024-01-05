@@ -26,10 +26,10 @@ function CarouselItems({
         />
         <Link
           href={`/${pt.id}`}
-          className="absolute m-auto bottom-5 text-center text-white bg-slate-300 backdrop-blur-md bg-opacity-40 min-w-[400px] md:min-w-[600px] rounded-2xl"
+          className="absolute m-auto bottom-5 text-center text-violet-950 p-2  hover:text-slate-950 bg-slate-300 backdrop-blur-md bg-opacity-40 min-w-[400px] max-h-[150px] md:max-h-[200px] md:min-w-[600px] rounded-2xl"
         >
-          <h1 className="text-3xl my-5">{pt.title}</h1>
-          <p>{pt.content?.slice(0, 35)}</p>
+          <h1 className="text-2xl md:text-3xl my-5">{pt.title}</h1>
+          <p className="text-sm">{pt.content?.slice(0, 35)}</p>
         </Link>
       </div>
     </>

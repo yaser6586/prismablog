@@ -42,6 +42,7 @@ async function page() {
           name="title"
           className="input input-bordered input-md w-full max-w-xs m-4 min-w-full"
           required
+          dir="rtl"
         />
         <input
           type="text"
@@ -58,6 +59,7 @@ async function page() {
           name="body"
           className="textarea textarea-bordered textarea-lg w-full max-w-xs m-4 min-h-[300px] min-w-full"
           required
+          dir="rtl"
         ></textarea>
         <div className="text-center m-10">
           <button type="submit" className="btn btn-info m-4 min-w-full ">
