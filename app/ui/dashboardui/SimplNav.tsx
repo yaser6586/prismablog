@@ -124,7 +124,7 @@ function SimpleNave() {
           <div
             className="categories z-50 absolute grid grid-cols-2 gap-4 bg-slate-400
          backdrop-blur-md bg-opacity-40 min-w-40 min-h-44 text-center justify-center
-         rounded-xl right-44 top-12 md:right-[250px]  lg:right-[450px]   "
+         rounded-xl right-44 top-12 md:right-[350px]  lg:right-[550px]   "
           >
             <div className="m-auto p-3" onClick={() => setShowCatMenu(false)}>
               <Link href={"/categories/tech"} className="hover:text-black">

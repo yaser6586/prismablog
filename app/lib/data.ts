@@ -213,3 +213,13 @@ export async function searchPost( query : string ) {
   }
 }
 
+export async function getAllIds() {
+  const ids = await prisma.post.findMany({
+    select : {
+      id : true
+    }
+  })
+
+  return ids
+}
+

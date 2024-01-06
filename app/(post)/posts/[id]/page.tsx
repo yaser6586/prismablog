@@ -1,5 +1,5 @@
 import React from "react";
-import { getComment, getLike, getPost } from "../../lib/data";
+import { getAllIds, getComment, getLike, getPost } from "../../../lib/data";
 import { Metadata, ResolvingMetadata } from "next";
 import Comment from "@/app/ui/main/Comment";
 import { LikeType, PostType, Props } from "@/app/lib/definations";
@@ -10,7 +10,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
 import { redirect } from "next/navigation";
 import { Content } from "next/font/google";
 
-// import { notoKufi } from "@/app/ui/font";
+export const dynamicParams = false;
 
 export async function generateMetadata(
   { params, searchParams }: Props,
@@ -31,14 +31,28 @@ export async function generateMetadata(
   };
 }
 
-async function postDetail({ params }: { params: { id: string } }) {
+export async function generateStaticParams() {
+  const ids = await getAllIds();
+
+  return ids.map((id) => ({
+    id: id.id,
+  }));
+}
+
+async function postDetail({
+  params,
+}: {
+  params: {
+    id: string;
+  };
+}) {
   const post = await getPost(params.id);
   const comments = await getComment(post?.id as string);
   const session = await getServerSession(authOptions);
   const like = await getLike(session?.user.userId as string, post?.id!);
-  if (post === null) {
-    redirect("/");
-  }
+  // if (post === null) {
+  //   redirect("/");
+  // }
   return (
     <div className="w-full min-h-screen ">
       <div className="content flex flex-col justify-center mt-20 mx-1 md:mx-24 lg:mx-32">
