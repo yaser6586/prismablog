@@ -320,22 +320,53 @@ export async function resetPasswordEmail( data : FormData) {
         from: 'info@teknext.ir',
         to: user.email,
         subject: 'ریست پسورد teknext',
-        html: `<div style='display: flex ; flex-direction: column; justify-content: center;'>
-        <h1 dir="rtl" style=" margin: auto; font-size: large; font-family:
-         'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; color: blue;">سلام yaser</h1> ،
-           <p dir='rtl' style="font-size: medium; text-align: center;">
+        html: `    <style>
+        .container {
+            max-width: 100%;
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            justify-content: center;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            direction: rtl;
+            text-align: center;
+            
+            
+
+        }
+        .heading {
+            font-size: larger;
+            margin:20px auto ;
+            
+
+        }
+        .name{
+            color: rgb(52, 52, 245);
+        }
+        .mailBody{
+            margin: auto;
+            padding-bottom: 50px;
+        }
+    </style>
+   <div class="container">
+        <h1 class="heading">سلام <span class="name">yaser</span></h1>
+           <p dir='rtl' class="mailBody">
                 اخیرا کسی تقاضای ریست رمز کاربری شما را برای ما فرستاده است.
-                اگر شما نبوده اید این ایمیل را نادیده بگیرید و اگر شما این در خواست را فرستاده اید از طریق اینک زیر پس.رد خو را ریست کنید
+                اگر شما نبوده اید این ایمیل را نادیده بگیرید و اگر شما این در خواست را فرستاده اید از طریق اینک زیر پسورد خو را ریست کنید
                
            <br><br><br>
-       لینک ریست : <a dir="rtl" href=https://teknext.ir/passwordReset/${token.token}> https://teknext.ir/passwordReset/${token.token}</a> 
+       لینک ریست : <a  dir="rtl" href=https://teknext.ir/passwordReset/${token.token}> https://teknext.ir/passwordReset/${token.token.slice(0,10)}</a> 
         
         <br>
         <br><br><br>
         
         واحد امنیت سایت تک نکست
     </p>
-   </div>`
+   </div>
+`
     
       })
         .then(() => {console.log('OK, Email has been sent.')
