@@ -242,17 +242,17 @@ function SimpleNave() {
                 </div>
                 <ul
                   tabIndex={0}
-                  className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-slate-400 bg-opacity-40 backdrop-blur-md rounded-box w-52 "
+                  className="menu menu-sm dropdown-content mt-3  z-[1] p-2 shadow bg-slate-400 bg-opacity-40 backdrop-blur-md rounded-box w-52 "
                 >
-                  <li>
-                    <Link href={""} className="justify-between">
-                      Profile
+                  <li dir="rtl">
+                    <Link href={""} className="justify-between ">
+                      پروفایل
                     </Link>
                   </li>
 
-                  <li>
+                  <li dir="rtl">
                     <Link href={""} onClick={() => signOut()}>
-                      Logout
+                      خروج
                     </Link>
                   </li>
                 </ul>

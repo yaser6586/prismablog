@@ -304,24 +304,25 @@ export async function resetPasswordEmail( data : FormData) {
       const transporter =  nodemailer.createTransport({
         host: MAIL_HOST,
         port: MAIL_PORT,
-       
+        
         secure: false,
         auth: {
           // TODO: replace `user` and `pass` values from <https://forwardemail.net>
           user: MAIL_USER,
           pass: MAIL_PASSWORD,
         },
+    
         
       });
   
       
        transporter.sendMail({
-        from: 'security@teknext.ir',
+        from: 'info@teknext.ir',
         to: user.email,
         subject: 'ریست پسورد teknext',
         html: `<div style='display: flex ; flex-direction: column; justify-content: center;'>
         <h1 dir="rtl" style=" margin: auto; font-size: large; font-family:
-         'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; color: blue;">سلام ${user.name}</h1> ،
+         'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; color: blue;">سلام yaser</h1> ،
            <p dir='rtl' style="font-size: medium; text-align: center;">
                 اخیرا کسی تقاضای ریست رمز کاربری شما را برای ما فرستاده است.
                 اگر شما نبوده اید این ایمیل را نادیده بگیرید و اگر شما این در خواست را فرستاده اید از طریق اینک زیر پس.رد خو را ریست کنید
@@ -333,7 +334,8 @@ export async function resetPasswordEmail( data : FormData) {
         <br><br><br>
         
         واحد امنیت سایت تک نکست
-    </p>`
+    </p>
+   </div>`
     
       })
         .then(() => {console.log('OK, Email has been sent.')

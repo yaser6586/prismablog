@@ -7,12 +7,12 @@ function ForgetPassPage() {
 
   async function handleSubmit(data: FormData) {
     const result = await resetPasswordEmail(data);
-    setError(result.error);
+    result && setError(result.error);
   }
   return (
     <div className="flex flex-col justify-center align-middle">
-      <div className="flex flex-col m-auto my-3 h-[300px] justify-center align-middle w-[500px] border-2 border-blue-700">
-        <div className="m-auto mt-4 ">
+      <div className="flex flex-col m-auto my-3 h-[300px] justify-center align-middle w-[350px] md:w-[500px] border-2 border-blue-700">
+        <div className="m-auto mt-4 text-center">
           برای دریافت ایمیل حاوی لینک ریست پسورد ایمیل خود را وارد نمایید
         </div>
         <div className="m-auto mt-7 w-full ">
@@ -24,7 +24,7 @@ function ForgetPassPage() {
               <input
                 type="email"
                 name="email"
-                className="input input-primary  w-[400px] my-3"
+                className="input input-primary w-[300px]  md:w-[400px] my-3"
               />
             </div>
             <div>
