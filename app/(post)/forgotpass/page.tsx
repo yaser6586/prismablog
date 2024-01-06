@@ -2,8 +2,9 @@
 import { resetPasswordEmail } from "@/app/lib/action";
 import React, { useState } from "react";
 
-function forgetPassPage() {
+function ForgetPassPage() {
   const [error, setError] = useState<string | undefined>();
+
   async function handleSubmit(data: FormData) {
     const result = await resetPasswordEmail(data);
     setError(result.error);
@@ -36,9 +37,10 @@ function forgetPassPage() {
           </form>
         </div>
       </div>
+
       <div className="text-center text-red-700 py-5">{error}</div>
     </div>
   );
 }
 
-export default forgetPassPage;
+export default ForgetPassPage;

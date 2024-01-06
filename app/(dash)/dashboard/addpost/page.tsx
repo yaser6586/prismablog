@@ -50,7 +50,7 @@ async function page() {
           id="userId"
           name="userId"
           className="input input-bordered input-md w-full max-w-xs m-4 min-w-full"
-          value={user?.user.userId}
+          defaultValue={user?.user.userId}
           hidden
         />
         <textarea

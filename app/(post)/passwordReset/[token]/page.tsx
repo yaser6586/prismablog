@@ -31,7 +31,7 @@ function PasswordResetPage({ params }: { params: { token: string } }) {
 
   return (
     <div className="flex-col justify-center align-middle">
-      <div className="flex flex-col justify-center align-middle border-2 my-10 p-4 max-w-[500px] m-auto border-blue-600">
+      <div className="flex flex-col justify-center align-middle border-2 my-10 p-4 max-w-[350px]  md:max-w-[500px] m-auto border-blue-600">
         <div className="m-auto ">پسورد جدید خود را وارد کنید</div>
         <div className="m-auto mt-7 w-full text-center ">
           <form
@@ -48,7 +48,7 @@ function PasswordResetPage({ params }: { params: { token: string } }) {
                 required: "لطفا فیلد پسورد را پر کنید",
               })}
               type="password"
-              className="input input-primary m-auto  w-[400px]"
+              className="input input-primary m-auto w-[300px] md:w-[400px]"
             />
             <p className="text-red-600 text-xs pt-1">
               {errors.password?.message}
@@ -64,7 +64,7 @@ function PasswordResetPage({ params }: { params: { token: string } }) {
                 required: "لطفا فیلد  تکرار پسورد را پر کنید",
               })}
               type="password"
-              className="input input-primary m-auto  w-[400px]"
+              className="input input-primary m-auto w-[300px]  md:w-[400px]"
             />
             <p className="text-red-600 text-xs pt-1">
               {errors.confirm?.message}

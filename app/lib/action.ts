@@ -10,15 +10,18 @@ import { authOptions } from "../api/auth/[...nextauth]/auth";
 import { Category, RestPassInputs, SignUpInputs } from "./definations";
 import {hash} from 'bcrypt'
 import { PrismaClient } from "@prisma/client";
-import { error } from "console";
 import { randomUUID } from "crypto";
-const nodemailer = require("nodemailer");
+import nodemailer from "nodemailer"
+import { Resend } from "resend";
+import { error } from "console";
+import ResetMailTemp from "../ui/main/ResetMailTemp";
 
- 
 const MAIL_HOST = process.env.MAIL_HOST;
-const MAIL_PORT = process.env.MAIL_PORT;
+const MAIL_PORT = Number(process.env.MAIL_PORT);
 const MAIL_USER = process.env.MAIL_USER;
 const MAIL_PASSWORD = process.env.MAIL_PASSWORD;
+
+
 
 
 
@@ -192,6 +195,32 @@ export async function deleteComment(id : string){
  }
 
  export async function createNewUser ( data : SignUpInputs) {
+   
+  const isEmailRepetitive = await prisma.user.findUnique({
+    where : {
+      email : data.email
+    }
+  })
+  if(isEmailRepetitive){
+    return {
+      error : "با این ایمیل قبلا حساب کاربری  ایجاد شده است اگر پسورد خود را فراموش کرده اید به بازیابی پسورد مراجعه کنید"
+    }
+  }
+
+    
+  const isUserNameRepetitive = await prisma.user.findUnique({
+    where : {
+      username : data.username
+    }
+  })
+
+  if(isUserNameRepetitive) {
+  return {
+    error : " این نام کابری(یوزر) قبلا استفاده شده"
+  }
+  }
+
+
     try {
    const hashPass = await hash(data.password,6)
    const newUser =   await prisma.user.create({
@@ -203,11 +232,17 @@ export async function deleteComment(id : string){
             password : hashPass
         }
       })
-    
-    return newUser
+    const {password , username, ...rest} = newUser 
+    return {
+      rest,
+      message : "حساب کاربری با موفقیت ایجاد شد",
+      status : "successfull"
+    }
     } catch (error) {
         
-        console.log(error)
+      return {
+        error : "ایجاد حساب کاربری موفقیت آمیز نبود دوباره تلاش کنید"
+      }
         
     }
  }
@@ -237,32 +272,69 @@ export async function resetPasswordEmail( data : FormData) {
         },
       })
 
+      
 
-      const transporter = nodemailer.createTransport({
+// const resend = new Resend("re_im3N9sNy_28GRJyUnxv1Liu9TYP5hL7DH");
+
+// const result = await resend.emails.send({
+//   from: 'info@teknext.ir',
+//   to: user.email,
+//   subject: 'Hello World',
+//   html : ` <h1 dir="rtl" >سلام ${user.name}</h1> ،
+//        <p dir='rtl'>
+//             اخیرا کسی تقاضای ریست رمز کاربری شما را برای ما فرستاده است.
+//             اگر شما نبوده اید این ایمیل را نادیده بگیرید و اگر شما این در خواست را فرستاده اید از طریق اینک زیر پس.رد خو را ریست کنید
+             
+//         </p> </br>
+//      <a dir="rtl" href=https://teknext.ir/passwordReset/${token.token}> https://teknext.ir/passwordReset/${token.token}</a> 
+      
+//      </br>
+      
+//      واحد امنیت سایت تک نکست`
+// });
+//  if(result) {
+//     redirect("/resetemailsent")
+//  }else {
+//     return {
+//         error : "email has not be sent"
+//     }
+//  }
+
+
+      const transporter =  nodemailer.createTransport({
         host: MAIL_HOST,
         port: MAIL_PORT,
-        tls: true,
+       
+        secure: false,
         auth: {
+          // TODO: replace `user` and `pass` values from <https://forwardemail.net>
           user: MAIL_USER,
           pass: MAIL_PASSWORD,
-        }
+        },
+        
       });
+  
       
-      transporter.sendMail({
-        from: 'info@teknext.ir',
+       transporter.sendMail({
+        from: 'security@teknext.ir',
         to: user.email,
-        subject: 'Test Email Subject',
-        html: ` <h1 dir="rtl" >سلام ${user.name}</h1> ،
-       <p dir='rtl'>
-            اخیرا کسی تقاضای ریست رمز کاربری شما را برای ما فرستاده است.
-            اگر شما نبوده اید این ایمیل را نادیده بگیرید و اگر شما این در خواست را فرستاده اید از طریق اینک زیر پس.رد خو را ریست کنید
-           
-       </p> </br>
-    <a dir="rtl" href=https://teknext.ir/passwordReset/${token.token}> https://teknext.ir/passwordReset/${token.token}</a> 
+        subject: 'ریست پسورد teknext',
+        html: `<div style='display: flex ; flex-direction: column; justify-content: center;'>
+        <h1 dir="rtl" style=" margin: auto; font-size: large; font-family:
+         'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; color: blue;">سلام ${user.name}</h1> ،
+           <p dir='rtl' style="font-size: medium; text-align: center;">
+                اخیرا کسی تقاضای ریست رمز کاربری شما را برای ما فرستاده است.
+                اگر شما نبوده اید این ایمیل را نادیده بگیرید و اگر شما این در خواست را فرستاده اید از طریق اینک زیر پس.رد خو را ریست کنید
+               
+           <br><br><br>
+       لینک ریست : <a dir="rtl" href=https://teknext.ir/passwordReset/${token.token}> https://teknext.ir/passwordReset/${token.token}</a> 
+        
+        <br>
+        <br><br><br>
+        
+        واحد امنیت سایت تک نکست
+    </p>`
     
-    </br>
-    
-    واحد امنیت سایت تک نکست`
       })
         .then(() => {console.log('OK, Email has been sent.')
     })

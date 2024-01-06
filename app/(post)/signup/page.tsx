@@ -1,14 +1,19 @@
 "use client";
 import { createNewUser } from "@/app/lib/action";
-import { SignUpInputs } from "@/app/lib/definations";
+import { SecureUser, SignUpInputs, UserType } from "@/app/lib/definations";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { IoClose } from "react-icons/io5";
 import { FaLongArrowAltRight } from "react-icons/fa";
+import { redirect, useRouter } from "next/navigation";
 
 function SignUpPage() {
-  const [isSuccessful, setIsSuccessful] = useState(false);
+  const [error, setError] = useState<string | undefined>();
+  const [message, setMessage] = useState<string | undefined>();
+  const [newUser, setNewUser] = useState<SecureUser | undefined>();
+  const [isSuccessful, setIsSuccessful] = useState<string | undefined>();
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -17,19 +22,27 @@ function SignUpPage() {
 
     formState: { errors, isSubmitSuccessful },
   } = useForm<SignUpInputs>();
-  const onSubmit: SubmitHandler<SignUpInputs> = (data) => createNewUser(data);
+  const onSubmit: SubmitHandler<SignUpInputs> = async (data) => {
+    const result = await createNewUser(data);
+    result.message && setMessage(result.message);
+    result.rest && setNewUser(result.rest);
+    result.error && setError(result.error);
+    result.status && setIsSuccessful(result.status);
+
+    router.push("/signup#errorMessage");
+  };
   useEffect(() => {
-    if (isSubmitSuccessful) {
+    if (isSuccessful && isSubmitSuccessful) {
       reset();
-      setIsSuccessful(true);
+      setError("");
     }
-  }, [isSubmitSuccessful]);
+  }, [isSuccessful]);
 
   return (
     <div className="min-h-screen text-center w-full relative">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="justify-center flex flex-col gap-3 mt-10 border-2 bg-slate-300 backdrop-blur-md bg-opacity-40 w-[450px] min-h-[600px] m-auto relative text-center "
+        className="justify-center flex flex-col gap-3 mt-10 border-2 bg-slate-300 backdrop-blur-md bg-opacity-40 w-[350px]  md:w-[450px] min-h-[600px] m-auto relative text-center "
         lang="en"
       >
         <div className=" m-auto mb-2 font-bold">عضویت در سایت</div>
@@ -136,8 +149,8 @@ function SignUpPage() {
         </div>
         <div>توجه : لطفا تمای فیلدها را با حروف انگلیسی پر کنید</div>
       </form>
-      {isSuccessful && (
-        <div className="absolute top-10 right-[35%] w-[400px] h-[200px] bg-green-500 backdrop-blur-md bg-opacity-50 flex flex-col justify-center gap-2">
+      {/* {isSuccessful && (
+        <div className="absolute top-10 right-[5%] md:right-[35%] w-[400px] h-[200px] bg-green-500 backdrop-blur-md bg-opacity-50 flex flex-col justify-center gap-2">
           <div className="font-bold">کاربر با موفقیت ایجاد شد</div>
           <div className="flex flex-row gap-2 px-36">
             <button
@@ -153,6 +166,25 @@ function SignUpPage() {
               title="رفتن به صفحه ورود"
             >
               <FaLongArrowAltRight size={30} />
+            </Link>
+          </div>
+        </div>
+      )} */}
+      <div className="text-lg text-red-700 my-2" id="errorMessage">
+        {error}
+      </div>
+      <div className="text-lg text-green-700 my-2" id="errorMessage">
+        {message}
+      </div>
+      {newUser && (
+        <div className="flex flex-col justify-center">
+          <div className="m-auto" dir="rtl">
+            {newUser?.name} عزیز خوش آمدید
+          </div>
+          <div className="m-auto my-2" id="errorMessage">
+            <Link href={"/signin"} className="text-blue-700">
+              {" "}
+              رفتن به صفحه ورود
             </Link>
           </div>
         </div>

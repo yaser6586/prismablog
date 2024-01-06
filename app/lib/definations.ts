@@ -65,5 +65,8 @@ export type PostType = {
   export type RestPassInputs = {
     password : string
     confirm : string
-    token : string
+    token 
+    : string
   }
+
+  export type SecureUser = Omit<UserType , "username" | "password" | "likes" | "posts" |  "comment">
