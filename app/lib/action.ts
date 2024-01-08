@@ -10,7 +10,7 @@ import {hash} from 'bcrypt'
 import { PrismaClient } from "@prisma/client";
 import { randomUUID } from "crypto";
 import nodemailer from "nodemailer"
-import { GetObjectCommand, PutObjectCommand, S3 } from "@aws-sdk/client-s3";
+import { DeleteObjectCommand, GetObjectCommand, PutObjectCommand, S3 } from "@aws-sdk/client-s3";
 import { client } from "../config/awsSdk";
 
 
@@ -235,6 +235,8 @@ export async function deleteComment(id : string){
        
         data : {
           userId : newUser.id,
+          name : newUser.name
+         
           // profileImagUrl : `https://teknext-bucket.storage.iran.liara.space/avatar/default-avatar.png`
         }
        })
@@ -549,6 +551,47 @@ try {
 
 }
 
+}
+
+export async function handleDeleteUploadedPhoto(picName : string , userId : string){
+  
+  const defaultUtl = "https://teknext-bucket.storage.iran.liara.space/avatar/default-avatar.png"
+
+  if(picName === defaultUtl) {
+    return {
+      status : "error" , message : "قبلا آوارتار را پاک کرده اید"
+    }
+  }
+  
+  const keyName = picName.slice(47,)
+  const params = {
+    Bucket: process.env.LIARA_BUCKET_NAME,
+    Key: keyName
+  };
+  
+ 
+  try {
+    await client.send(new DeleteObjectCommand(params));
+    await prisma.user.update({
+      where : {
+        id : userId
+      },
+      data : {
+        imgUrl : defaultUtl
+      }
+
+    })
+    revalidatePath("/")
+    revalidatePath("/profile")
+    return {
+      status : "successful" , message : "آواتار شما با موفقیت حذف شد"
+    }
+   
+  } catch (error) {
+   return {
+      status : "error" , message : "عکس حذف نشد دوباره تلاش کنید"
+    }
+  }
 }
 
 

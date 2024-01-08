@@ -11,6 +11,7 @@ import { GrClose } from "react-icons/gr";
 import { TfiSave } from "react-icons/tfi";
 import { AiOutlineCloseSquare } from "react-icons/ai";
 import { Session } from "next-auth";
+import DeleteUploadedPic from "./DeleteUploadedPic";
 
 function Profile({ profileData }: { profileData: ProfileType }) {
   const [showAddAvatarMenu, setShowAddAvatarMenu] = useState(false);
@@ -90,8 +91,12 @@ function Profile({ profileData }: { profileData: ProfileType }) {
               </button>
             )}
           </div>
-          <div className="m-auto">name : {profileData?.name}</div>
-          <div className="m-auto">bio : {profileData?.bio}</div>
+          <div className="m-auto text-2xl" dir="rtl">
+            نام : {profileData?.name}
+          </div>
+          <div className="m-auto text-2xl" dir="rtl">
+            بیو : {profileData?.bio}
+          </div>
           <div className="m-auto">
             {session?.user.userId === profileData.userId && (
               <button onClick={() => setShowChangeProfileMenu(true)}>
@@ -109,7 +114,7 @@ function Profile({ profileData }: { profileData: ProfileType }) {
               <UploadForm onSubmit={uploadAvatar as () => object} />
             </div>
             <div className="m-auto border-b-2 w-full text-center hover:text-black cursor-pointer">
-              delete
+              <DeleteUploadedPic />
             </div>
             <div className="m-auto  text-center hover:text-black cursor-pointer ">
               <button
