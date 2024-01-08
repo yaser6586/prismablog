@@ -47,14 +47,14 @@ async function Comment({
             id="userId"
             name="userId"
             className="hidden"
-            value={session?.user.userId}
+            defaultValue={session?.user.userId}
           />
           <input
             type="text"
             id="postId"
             name="postId"
             className="hidden"
-            value={postId}
+            defaultValue={postId}
           />
           {session ? (
             <button

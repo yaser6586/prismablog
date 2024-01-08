@@ -1,4 +1,4 @@
-import { checkUser } from "@/app/lib/data"
+import { checkUser, getProfileOfUser } from "@/app/lib/data"
 import { PostType, UserType } from "@/app/lib/definations";
 import { compare } from "bcrypt";
 import { NextAuthOptions } from "next-auth";
@@ -26,6 +26,7 @@ export const authOptions : NextAuthOptions = {
         async authorize(credentials, req) {
           // Add logic here to look up the user from the credentials supplied
          const user = await checkUser(credentials?.username as string )
+         const profile = await getProfileOfUser(user?.id as string)
          
         if(!user) {
             return null
@@ -34,6 +35,7 @@ export const authOptions : NextAuthOptions = {
         if(!isPassValid) {
             return null
         }else {
+        
             return user
         }
         }
@@ -42,29 +44,44 @@ export const authOptions : NextAuthOptions = {
     callbacks: {
        
        
-        async session({ session, token }) {
-          
+        async session({ session, token , user }) {
+        const { imgUrl , ...profile }= token
+        
+        
+        
           return {
             ...session , 
             user:  {
                 ...session.user,
                 userId : token.sub,
-               role :  token.role
+               role :  token.role,
+               imgUrl ,
+               ...profile
+              
+              
+              
             }
           
           }
         },
         async jwt({ token, user}) {
+            
             const u = user as unknown as UserType
+           
+           
          if(user){
-            return {
+            return  {
                 ...token , 
-                userId : u.id,
-                role : u.role
+                userId : u.id ,
+                role : u.role,
+                imgUrl : u.imgUrl,
+                profileId : u.profile?.id
+               
 
             }
          }
-         return token
+        
+       return token
         }
         
       },

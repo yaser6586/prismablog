@@ -6,6 +6,9 @@ import { IoClose } from "react-icons/io5";
 import Image from "next/image";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { PiSignIn } from "react-icons/pi";
+import { Session } from "next-auth";
+import { ProfileType } from "@/app/lib/definations";
+import ProfileAvatar from "../main/ProfileAvatar";
 // import { NotoKufiArabic } from "@/app/layout";
 
 function SimpleNave() {
@@ -156,45 +159,7 @@ function SimpleNave() {
 
         <div className="start hidden md:block">
           {session ? (
-            <>
-              <div className="dropdown dropdown-end">
-                <div
-                  tabIndex={0}
-                  role="button"
-                  className="btn btn-ghost btn-circle avatar mx-2 "
-                >
-                  <div className="w-10 rounded-full">
-                    <div className="avatar placeholder">
-                      <div className="bg-blue-900 text-neutral-content rounded-full w-12 flex flex-col justify-center align-middle">
-                        <span className="text-[10px] mr-[6px] mb-1">
-                          {session?.user.name?.slice(0, 2).toLocaleUpperCase()}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <ul
-                  tabIndex={0}
-                  className="menu menu-sm dropdown-content mt-3 mx-2  z-[1] p-2 shadow bg-slate-400 bg-opacity-40 backdrop-blur-md rounded-box w-52  "
-                >
-                  <li>
-                    <Link href={""} className="justify-end">
-                      پروفایل
-                    </Link>
-                  </li>
-
-                  <li>
-                    <Link
-                      className="justify-end"
-                      href={""}
-                      onClick={() => signOut()}
-                    >
-                      خروج
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            </>
+            <ProfileAvatar session={session as Session} />
           ) : (
             <button
               className="pr-3"
@@ -222,42 +187,8 @@ function SimpleNave() {
             setShowMenu(false);
           }}
         >
-          {session !== null ? (
-            <>
-              <div className="dropdown dropdown-end">
-                <div
-                  tabIndex={0}
-                  role="button"
-                  className="btn btn-ghost btn-circle avatar"
-                >
-                  <div className="w-10 rounded-full">
-                    <div className="avatar placeholder">
-                      <div className="bg-blue-900 text-neutral-content rounded-full w-12 flex flex-col justify-center align-middle">
-                        <span className="text-[10px] mr-[6px] mb-1">
-                          {session?.user.name?.slice(0, 2).toLocaleUpperCase()}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <ul
-                  tabIndex={0}
-                  className="menu menu-sm dropdown-content mt-3  z-[1] p-2 shadow bg-slate-400 bg-opacity-40 backdrop-blur-md rounded-box w-52 "
-                >
-                  <li dir="rtl">
-                    <Link href={""} className="justify-between ">
-                      پروفایل
-                    </Link>
-                  </li>
-
-                  <li dir="rtl">
-                    <Link href={""} onClick={() => signOut()}>
-                      خروج
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            </>
+          {session ? (
+            <ProfileAvatar session={session as Session} />
           ) : (
             <button
               className="pr-3"

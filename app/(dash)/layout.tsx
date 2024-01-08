@@ -6,12 +6,13 @@ import { FaRegListAlt } from "react-icons/fa";
 // import { manrope, notoKufi, nunito, ptserif, smoochSans } from "../ui/font";
 import SimpleNave from "../ui/dashboardui/SimplNav";
 import { PiUserListBold } from "react-icons/pi";
+import SimpleHeroSection from "../ui/dashboardui/simpleHeroSection";
 
 function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="w-full ">
       <div>
-        <SimpleNave />
+        <SimpleHeroSection />
       </div>
       <div lang="fa" className="flex flex-col md:flex-row font-sans">
         <div className="sidbar basis-1/4   min-h-screen  text-blue-800 hidden md:block ">

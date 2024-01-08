@@ -1,3 +1,4 @@
+import { ProfileType } from "@/app/lib/definations"
 import NextAuth, { DefaultSession } from "next-auth"
  
 declare module "next-auth" {
@@ -6,8 +7,13 @@ declare module "next-auth" {
    */
   interface Session {
     user: {
+     
+      imgUrl : string
       userId : string
       role: string | undefined | null
+      profileId:string
+      
     } & DefaultSession["user"]
+     
   }
 }

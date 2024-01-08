@@ -20,13 +20,19 @@ export type PostType = {
   
   export type ProfileType = {
     id   :  string
+ 
+  
+    name? : string
     bio  : string | null
+    user : UserType 
     userId : string
+    
   }
   
   export type UserType = {
     id    :  string
     email  : string 
+    imgUrl : string
     name : string | null
     likes : LikeType[]
     comment : CommentType[]
@@ -69,4 +75,5 @@ export type PostType = {
     : string
   }
 
-  export type SecureUser = Omit<UserType , "username" | "password" | "likes" | "posts" |  "comment">
+  export type SecureUser = Omit<UserType , "username" | "password" | "likes" | "posts" |  "comment" | "imgUrl">
+  export type ProfileUser = Omit<UserType , "username" | "password" | "likes" | "posts" |  "comment" >

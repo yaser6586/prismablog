@@ -39,6 +39,7 @@ model Like {
 
 model Profile {
   id     String  @id @default(uuid())
+  name   String?
   bio    String?
   user   User    @relation(fields: [userId], references: [id])
   userId String  @unique
@@ -48,6 +49,7 @@ model User {
   id                  String               @id @default(uuid())
   email               String               @unique
   name                String?
+  imgUrl              String?              @default("https://teknext-bucket.storage.iran.liara.space/avatar/default-avatar.png")
   likes               Like[]
   comment             Comment[]
   posts               Post[]

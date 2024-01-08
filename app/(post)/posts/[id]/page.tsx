@@ -10,7 +10,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
 import { redirect } from "next/navigation";
 import { Content } from "next/font/google";
 
-export const dynamicParams = false;
+// export const dynamicParams = false;
 
 export async function generateMetadata(
   { params, searchParams }: Props,
@@ -31,13 +31,13 @@ export async function generateMetadata(
   };
 }
 
-export async function generateStaticParams() {
-  const ids = await getAllIds();
+// export async function generateStaticParams() {
+//   const ids = await getAllIds();
 
-  return ids.map((id) => ({
-    id: id.id,
-  }));
-}
+//   return ids.map((id) => ({
+//     id: id.id,
+//   }));
+// }
 
 async function postDetail({
   params,
@@ -50,13 +50,11 @@ async function postDetail({
   const comments = await getComment(post?.id as string);
   const session = await getServerSession(authOptions);
   const like = await getLike(session?.user.userId as string, post?.id!);
-  // if (post === null) {
-  //   redirect("/");
-  // }
+
   return (
     <div className="w-full min-h-screen ">
       <div className="content flex flex-col justify-center mt-20 mx-1 md:mx-24 lg:mx-32">
-        <div dir="rtl" className={`text-3xl mx-auto mt-2`}>
+        <div dir="rtl" className={`text-3xl mx-auto mt-2 pr-4`}>
           {post?.title}
         </div>
 

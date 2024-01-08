@@ -3,8 +3,6 @@
 import { revalidatePath } from "next/cache";
 import { addNewPost, getAllUser } from "./data";
 import { redirect } from "next/navigation";
-
-import { throws } from "assert";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/auth";
 import { Category, RestPassInputs, SignUpInputs } from "./definations";
@@ -12,9 +10,10 @@ import {hash} from 'bcrypt'
 import { PrismaClient } from "@prisma/client";
 import { randomUUID } from "crypto";
 import nodemailer from "nodemailer"
-import { Resend } from "resend";
-import { error } from "console";
-import ResetMailTemp from "../ui/main/ResetMailTemp";
+import { GetObjectCommand, PutObjectCommand, S3 } from "@aws-sdk/client-s3";
+import { client } from "../config/awsSdk";
+
+
 
 const MAIL_HOST = process.env.MAIL_HOST;
 const MAIL_PORT = Number(process.env.MAIL_PORT);
@@ -216,7 +215,7 @@ export async function deleteComment(id : string){
 
   if(isUserNameRepetitive) {
   return {
-    error : " این نام کابری(یوزر) قبلا استفاده شده"
+    error : " این نام کاربری(یوزر) قبلا استفاده شده"
   }
   }
 
@@ -232,6 +231,13 @@ export async function deleteComment(id : string){
             password : hashPass
         }
       })
+      await prisma.profile.create({
+       
+        data : {
+          userId : newUser.id,
+          // profileImagUrl : `https://teknext-bucket.storage.iran.liara.space/avatar/default-avatar.png`
+        }
+       })
     const {password , username, ...rest} = newUser 
     return {
       rest,
@@ -352,7 +358,7 @@ export async function resetPasswordEmail( data : FormData) {
         }
     </style>
    <div class="container">
-        <h1 class="heading">سلام <span class="name">yaser</span></h1>
+        <h1 class="heading">سلام <span class="name">${user.name}</span></h1>
            <p dir='rtl' class="mailBody">
                 اخیرا کسی تقاضای ریست رمز کاربری شما را برای ما فرستاده است.
                 اگر شما نبوده اید این ایمیل را نادیده بگیرید و اگر شما این در خواست را فرستاده اید از طریق اینک زیر پسورد خو را ریست کنید
@@ -426,3 +432,124 @@ export async function restPassFinalStep( data : RestPassInputs) {
   redirect("/resetSuccessful")
 
 }
+
+
+export async function uploadAvatar(prevState : any , formData : FormData){
+  const file = Object(formData.get("file")) 
+  const userId = formData.get("userId") as string
+ 
+
+  if(file.size === 0 ){
+     return {
+      status : "error",message : "لطفا عکس را انتخاب کنید"
+     }
+  }
+
+  const buffer = Buffer.from(await file.arrayBuffer())
+
+  await uploadFileToLiara(buffer , file.name , userId)
+}
+
+export async function uploadFileToLiara(file : Buffer , filename : any , userId : string) {
+  const fileBuffer = file;
+  const params = {
+    Body: fileBuffer,
+    Bucket: process.env.LIARA_BUCKET_NAME,
+    Key: `avatar/${filename}`,
+    ContentType : "img/jpg"
+  };
+
+  const command = new PutObjectCommand(params)
+
+  try {
+   const result =  await client.send(command);
+   await prisma.user.update({
+    where : {
+      id : userId
+    },
+    data : {
+      imgUrl : `https://teknext-bucket.storage.iran.liara.space/${params.Key}`
+    }
+   })
+  //  await prisma.profile.update({
+  //   where : {
+  //     userId : userId
+  //   },
+  //   data : {
+  //     profileImagUrl : `https://teknext-bucket.storage.iran.liara.space/${params.Key}`
+  //   }
+  //  })
+   revalidatePath("/")
+   return {
+    status : "succefull",
+    message: "عکس با موفقیت آپلود شد"
+  }
+  
+  } catch (error) {
+    return {
+      status : "error",
+      message: "upload failed"
+    }
+  }
+
+}
+
+export async function changProfile(data : FormData){
+  const name = data.get("name") as string
+  const email = data.get("email") as string
+  const bio = data.get("bio") as string
+  const userId = data.get("userId") as string
+  
+ const repitetive = await prisma.user.findUnique({
+    where:{
+      email : email
+    }
+  })
+if(repitetive) {
+  return{ status : "error" , message : "با این ایمیل قبلا ثبت نام شده لطفا  ایمیل دیگری را وارد کنید"}
+}
+try {
+  await prisma.user.update({
+    where : {
+      id : userId
+    },
+    data :{
+      email : email,
+      name : name
+    }
+  })
+  await prisma.profile.update({
+    where:{
+      id : userId
+    },
+    data : {
+      name : name
+    }
+  })
+} catch (error) {
+  return{ status : "error" , message : "نام و ایمیل جدید متسفانه ثبت نشد"}
+
+}
+
+try {
+  await prisma.profile.update({
+    where :{
+      userId : userId
+    },
+    data:{
+      bio : bio
+    }
+  })
+  revalidatePath("/")
+  return {
+    status : "successful" , message : "پروفایل با موفقیت آپدیت شد"
+  }
+} catch (error) {
+  return{ status : "error" , message : "بیو جدید متاسفانه ثبت نشد"}
+
+}
+
+}
+
+
+

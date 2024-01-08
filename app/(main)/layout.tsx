@@ -1,5 +1,6 @@
 import { Inter } from "next/font/google";
 import Navbar from "../ui/main/Navbar";
+import HeroSection from "../ui/main/HeroSection";
 // import { manrope, notoKufi, notoSansArabic, nunito } from "../ui/font";
 
 // const inter = Inter({ subsets: ["latin"] });
@@ -12,7 +13,7 @@ export default function RootLayout({
   return (
     <div>
       <div>
-        <Navbar />
+        <HeroSection />
       </div>
       <div lang="fa"> {children}</div>
     </div>

@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { redirect } from "next/navigation";
 import { resolve } from "path";
-import { Category } from "./definations";
+import { Category, UserType } from "./definations";
 import { title } from "process";
 
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient }
@@ -153,6 +153,9 @@ export async function checkUser(username : string ) {
     where : {
       username : username,
      
+    },
+    include : {
+      profile : true
     }
    
   })
@@ -163,6 +166,9 @@ export async function getUserOfComment(userId : string){
     const user = await prisma.user.findUnique({
       where : {
         id  : userId
+      },
+      include : {
+        profile : true
       }
     })
     
@@ -221,5 +227,53 @@ export async function getAllIds() {
   })
 
   return ids
+}
+export async function getProfile(id : string) {
+  try {
+    const profile = await prisma.profile.findUnique({
+      where : {
+        id : id
+      },
+      include : {
+        user :true
+      }
+    })
+    
+    return profile
+  } catch (error) {
+    throw new Error("profile has not be found")
+  }
+}
+
+export async function getUserOfProfile(id : string){
+  
+  try {
+    const user = await prisma.user.findUnique({
+      where : {
+        id : id
+      }
+    })
+    const { password, username , ...rest} = user as UserType
+    return rest
+  } catch (error) {
+    throw new Error("user has not be found")
+  }
+  
+}
+
+export async function getProfileOfUser(id:string){
+  try {
+    const profile = await prisma.profile.findUnique({
+      where : {
+        userId : id
+      }
+    })
+    return profile
+  } catch (error) {
+    throw new Error("در یافتن پروفایل مشکلی پیش آمده");
+    
+    // return null
+  }
+
 }
 
