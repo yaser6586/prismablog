@@ -7,11 +7,11 @@ import Image from "next/image";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { PiSignIn } from "react-icons/pi";
 import { Session } from "next-auth";
-import { ProfileType } from "@/app/lib/definations";
+import { ProfileType, UserOfProfile } from "@/app/lib/definations";
 import ProfileAvatar from "../main/ProfileAvatar";
 // import { NotoKufiArabic } from "@/app/layout";
 
-function SimpleNave() {
+function SimpleNave({ profile }: { profile: UserOfProfile }) {
   const [showMenu, setShowMenu] = useState(false);
   const [showCatMenu, setShowCatMenu] = useState(false);
   const { data: session } = useSession();
@@ -53,7 +53,11 @@ function SimpleNave() {
             )}
             <div>
               <button onClick={toggleCatMenu}>
-                <Link href={"#"} className="hover:text-black">
+                <Link
+                  href={"#"}
+                  className="hover:text-black"
+                  onClick={(e) => e.preventDefault()}
+                >
                   دسته بندی
                 </Link>
               </button>
@@ -64,7 +68,7 @@ function SimpleNave() {
               </Link>
             </div>
             <div>
-              <Link href={"#"} className="hover:text-black">
+              <Link href={"/"} className="hover:text-black">
                 درباره
               </Link>
             </div>
@@ -95,8 +99,9 @@ function SimpleNave() {
               <div>
                 <button onClick={toggleCatMenu}>
                   <Link
-                    href={"javascript:void(0)"}
+                    href={"#"}
                     className="hover:text-black"
+                    onClick={(e) => e.preventDefault()}
                   >
                     دسته بندی
                   </Link>
@@ -108,7 +113,7 @@ function SimpleNave() {
                 </Link>
               </div>
               <div>
-                <Link href={"#"} className="hover:text-black">
+                <Link href={"/"} className="hover:text-black">
                   درباره
                 </Link>
               </div>
@@ -159,7 +164,7 @@ function SimpleNave() {
 
         <div className="start hidden md:block">
           {session ? (
-            <ProfileAvatar session={session as Session} />
+            <ProfileAvatar profile={profile as UserOfProfile} />
           ) : (
             <button
               className="pr-3"
@@ -188,7 +193,7 @@ function SimpleNave() {
           }}
         >
           {session ? (
-            <ProfileAvatar session={session as Session} />
+            <ProfileAvatar profile={profile as UserOfProfile} />
           ) : (
             <button
               className="pr-3"

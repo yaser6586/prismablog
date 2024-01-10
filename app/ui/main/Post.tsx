@@ -9,10 +9,12 @@ import { LikeType, PostType } from "@/app/lib/definations";
 import { getComment, likeNumber } from "@/app/lib/data";
 import { AddViewPost, handleEditPost } from "@/app/lib/action";
 import PostLinker from "./PostLinker";
+import { PiReadCvLogoBold } from "react-icons/pi";
 
 async function Post({ postData }: { postData: PostType }) {
   const comments = await getComment(postData.id);
   const likeNumberData: LikeType[] = await likeNumber(postData.id);
+ 
   return (
     <div
       className="post flex flex-col w-[300px] h-[320px] border
@@ -44,6 +46,7 @@ async function Post({ postData }: { postData: PostType }) {
       </p>
 
       <PostLinker postData={postData} />
+    
 
       <div className="flex flex-row justify-between mx-4">
         <div className="flex flex-row ">

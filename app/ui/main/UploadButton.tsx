@@ -2,6 +2,7 @@
 
 import { useFormStatus } from "react-dom";
 import { RiImageAddLine } from "react-icons/ri";
+import { LuUpload } from "react-icons/lu";
 
 function UploadButton() {
   const { pending } = useFormStatus();
@@ -9,12 +10,13 @@ function UploadButton() {
     <button
       type="submit"
       disabled={pending}
-      className="mb-4 hover:text-green-700 pr-3"
+      className="mb-4 hover:text-green-700 pr-8"
+      title="آپلود"
     >
       {pending ? (
-        <progress className="progress w-10"></progress>
+        <progress className="progress w-14"></progress>
       ) : (
-        <RiImageAddLine size={30} />
+        <LuUpload size={30} />
       )}
     </button>
   );

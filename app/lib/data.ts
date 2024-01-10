@@ -266,9 +266,18 @@ export async function getProfileOfUser(id:string){
     const profile = await prisma.profile.findUnique({
       where : {
         userId : id
+      },
+      include :{
+        user : true
       }
     })
-    return profile
+
+     
+      const profileId = profile?.id
+      const userId = profile?.userId
+      const ImgUrl = profile?.user.imgUrl
+      const name = profile?.name
+    return {profileId,userId,ImgUrl , name}
   } catch (error) {
     throw new Error("در یافتن پروفایل مشکلی پیش آمده");
     

@@ -10,9 +10,9 @@ import { PiSignIn } from "react-icons/pi";
 import { CiSearch } from "react-icons/ci";
 import ProfileAvatar from "./ProfileAvatar";
 import { Session } from "next-auth";
-import { ProfileType } from "@/app/lib/definations";
+import { ProfileType, UserOfProfile } from "@/app/lib/definations";
 
-function Navbar() {
+function Navbar({ profile }: { profile: UserOfProfile }) {
   const [showMenu, setShowMenu] = useState(false);
   const [showCatMenu, setShowCatMenu] = useState(false);
   const { data: session } = useSession();
@@ -54,7 +54,11 @@ function Navbar() {
             )}
             <div>
               <button onClick={toggleCatMenu}>
-                <Link href={"#"} className="hover:text-black">
+                <Link
+                  href={"#"}
+                  className="hover:text-black"
+                  onClick={(e) => e.preventDefault()}
+                >
                   دسته بندی
                 </Link>
               </button>
@@ -65,7 +69,7 @@ function Navbar() {
               </Link>
             </div>
             <div>
-              <Link href={"#"} className="hover:text-black">
+              <Link href={"/"} className="hover:text-black">
                 درباره
               </Link>
             </div>
@@ -95,7 +99,11 @@ function Navbar() {
               )}
               <div>
                 <button onClick={toggleCatMenu}>
-                  <Link href={"#"} className="hover:text-black">
+                  <Link
+                    href={"#"}
+                    className="hover:text-black"
+                    onClick={(e) => e.preventDefault()}
+                  >
                     دسته بندی
                   </Link>
                 </button>
@@ -106,7 +114,7 @@ function Navbar() {
                 </Link>
               </div>
               <div>
-                <Link href={"#"} className="hover:text-black">
+                <Link href={"/"} className="hover:text-black">
                   درباره
                 </Link>
               </div>
@@ -174,7 +182,7 @@ function Navbar() {
             </button>
           </form>
           {session ? (
-            <ProfileAvatar session={session as Session} />
+            <ProfileAvatar profile={profile as UserOfProfile} />
           ) : (
             <button
               className="pr-3 mb-9 mx-5"
@@ -204,7 +212,7 @@ function Navbar() {
           }}
         >
           {session ? (
-            <ProfileAvatar session={session as Session} />
+            <ProfileAvatar profile={profile as UserOfProfile} />
           ) : (
             <button
               className="pr-3"

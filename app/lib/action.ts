@@ -5,13 +5,14 @@ import { addNewPost, getAllUser } from "./data";
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/auth";
-import { Category, RestPassInputs, SignUpInputs } from "./definations";
+import { Category, RestPassInputs, ReturnedValue, SessionUser, SignUpInputs, UserType } from "./definations";
 import {hash} from 'bcrypt'
 import { PrismaClient } from "@prisma/client";
 import { randomUUID } from "crypto";
 import nodemailer from "nodemailer"
 import { DeleteObjectCommand, GetObjectCommand, PutObjectCommand, S3 } from "@aws-sdk/client-s3";
 import { client } from "../config/awsSdk";
+import { error } from "console";
 
 
 
@@ -440,16 +441,21 @@ export async function uploadAvatar(prevState : any , formData : FormData){
   const file = Object(formData.get("file")) 
   const userId = formData.get("userId") as string
  
-
   if(file.size === 0 ){
      return {
       status : "error",message : "لطفا عکس را انتخاب کنید"
      }
   }
+ if(file.size > 4e+6) {
+  return {
+    status : "error",message : "حجم عکس  نباید بیشتر از 4 مگابایت باشد"
+   }
+ }
 
   const buffer = Buffer.from(await file.arrayBuffer())
 
-  await uploadFileToLiara(buffer , file.name , userId)
+  const result = await uploadFileToLiara(buffer , file.name , userId)
+  return result
 }
 
 export async function uploadFileToLiara(file : Buffer , filename : any , userId : string) {
@@ -457,9 +463,34 @@ export async function uploadFileToLiara(file : Buffer , filename : any , userId 
   const params = {
     Body: fileBuffer,
     Bucket: process.env.LIARA_BUCKET_NAME,
-    Key: `avatar/${filename}`,
+    Key: `avatar/${randomUUID()}-${filename}`,
     ContentType : "img/jpg"
   };
+
+  // delete previous picture from liara disk space
+   const defaultUtl = "https://teknext-bucket.storage.iran.liara.space/avatar/default-avatar.png"
+  
+   const user = await prisma.user.findUnique({
+    where : {
+      id : userId
+    }
+   })
+
+     const prevPicName = user?.imgUrl!.slice(47,)
+
+     if(user?.imgUrl !== defaultUtl &&  prevPicName !== params.Key ) {
+      const prevParams = {
+        Bucket: process.env.LIARA_BUCKET_NAME,
+        Key: prevPicName
+      };
+      
+     
+      
+      await client.send(new DeleteObjectCommand(prevParams));
+      
+    
+    }
+
 
   const command = new PutObjectCommand(params)
 
@@ -473,17 +504,9 @@ export async function uploadFileToLiara(file : Buffer , filename : any , userId 
       imgUrl : `https://teknext-bucket.storage.iran.liara.space/${params.Key}`
     }
    })
-  //  await prisma.profile.update({
-  //   where : {
-  //     userId : userId
-  //   },
-  //   data : {
-  //     profileImagUrl : `https://teknext-bucket.storage.iran.liara.space/${params.Key}`
-  //   }
-  //  })
-   revalidatePath("/")
+    revalidatePath("/")
    return {
-    status : "succefull",
+    status : "successful",
     message: "عکس با موفقیت آپلود شد"
   }
   
@@ -502,68 +525,161 @@ export async function changProfile(data : FormData){
   const bio = data.get("bio") as string
   const userId = data.get("userId") as string
   
+  
+ 
  const repitetive = await prisma.user.findUnique({
     where:{
       email : email
+    },
+    include : {
+      profile : true
     }
   })
+  // if(repitetive && name === repitetive.profile?.name ){
+  //     return{ status : "error" , message : "مقدار  نام تغییری نکرده است"}
+
+  // }
+  // if(repitetive && 
+  //   bio === repitetive?.profile?.bio ){
+  //     return{ status : "error" , message : "مقدار بیو  تغییری نکرده است"}
+
+  // }
+ 
 if(repitetive) {
-  return{ status : "error" , message : "با این ایمیل قبلا ثبت نام شده لطفا  ایمیل دیگری را وارد کنید"}
+  return{ status : "error" , message : " با این ایمیل قبلا ثبت نام شده لطفا  ایمیل دیگری را وارد کنید یا فیلد را خالی بگذارید"}
 }
-try {
-  await prisma.user.update({
+// try {
+ 
+  
+    
+// } catch (error) {
+//   console.log(error)
+//   return{ status : "error" , message : "نام و ایمیل جدید متاسفانه ثبت نشد"}
+
+// }
+
+
+
+
+// try {
+//   await prisma.user.update({
+//     where : {
+//       id : userId
+//     },
+//     data :{
+//       email : email ,
+//       name : name
+//     }
+//   })
+// await prisma.profile.update({
+//   where:{
+//     userId : userId
+//   },
+//   data : {
+//     name : name,
+//     bio : bio
+//   }
+// })
+// revalidatePath("/")
+//   return {
+//     status : "successful" , message : "پروفایل با موفقیت آپدیت شد"
+//   }
+// } catch (error) {
+ 
+//   return{ status : "error" , message : "پروفایل جدید متاسفانه ثبت نشد"}
+
+// }
+
+ 
+const user = await prisma.user.findUnique({
+  where:{
+    id : userId
+  },
+  include : {
+    profile : true
+  }
+})
+
+
+if(user && name !== user?.profile?.name && name !=="") {
+
+  try {
+    await prisma.profile.update({
+      where : {
+        userId : userId
+      },
+      data : {
+         name : name
+      }
+    })
+    await prisma.user.update({
+      where : {
+        id : userId
+      },
+      data : {
+       name : name
+      }
+      
+    })
+  } catch (error) {
+    return {status : "error", message : "نام جدید ذخیره نشده "}
+  }
+}
+
+if(user && bio !== user?.profile?.bio) {
+
+  try {
+    await prisma.profile.update({
+      where : {
+        userId : userId
+      },
+      data : {
+         bio : bio
+      }
+    })
+  } catch (error) {
+    return {status : "error", message : "بیو جدید ذخیره نشده "}
+  }
+}
+
+if(user && email !== user?.email && email !== "") {
+
+  try {
+    await prisma.user.update({
+      where : {
+        id : userId
+      },
+      data : {
+         email : email
+      }
+    })
+  } catch (error) {
+    return {status : "error", message : "ایمیل جدید ذخیره نشده "}
+  }
+}
+revalidatePath("/")
+return {status : "successful", message : " پروفایل با موفقیت آپدید شد"}
+}
+
+export async function handleDeleteUploadedPhoto( userId : string){
+  
+  const defaultUrl = "https://teknext-bucket.storage.iran.liara.space/avatar/default-avatar.png"
+  
+  const user = await prisma.user.findUnique({
     where : {
       id : userId
-    },
-    data :{
-      email : email,
-      name : name
     }
   })
-  await prisma.profile.update({
-    where:{
-      id : userId
-    },
-    data : {
-      name : name
-    }
-  })
-} catch (error) {
-  return{ status : "error" , message : "نام و ایمیل جدید متسفانه ثبت نشد"}
 
-}
 
-try {
-  await prisma.profile.update({
-    where :{
-      userId : userId
-    },
-    data:{
-      bio : bio
-    }
-  })
-  revalidatePath("/")
-  return {
-    status : "successful" , message : "پروفایل با موفقیت آپدیت شد"
-  }
-} catch (error) {
-  return{ status : "error" , message : "بیو جدید متاسفانه ثبت نشد"}
-
-}
-
-}
-
-export async function handleDeleteUploadedPhoto(picName : string , userId : string){
-  
-  const defaultUtl = "https://teknext-bucket.storage.iran.liara.space/avatar/default-avatar.png"
-
-  if(picName === defaultUtl) {
+ if(user?.imgUrl === defaultUrl) {
     return {
       status : "error" , message : "قبلا آوارتار را پاک کرده اید"
     }
   }
   
-  const keyName = picName.slice(47,)
+  const keyName = user?.imgUrl?.slice(47,)
+  
   const params = {
     Bucket: process.env.LIARA_BUCKET_NAME,
     Key: keyName
@@ -571,18 +687,19 @@ export async function handleDeleteUploadedPhoto(picName : string , userId : stri
   
  
   try {
+    console.log(params.Key)
     await client.send(new DeleteObjectCommand(params));
     await prisma.user.update({
       where : {
         id : userId
       },
       data : {
-        imgUrl : defaultUtl
+        imgUrl : defaultUrl
       }
 
     })
     revalidatePath("/")
-    revalidatePath("/profile")
+    
     return {
       status : "successful" , message : "آواتار شما با موفقیت حذف شد"
     }

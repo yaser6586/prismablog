@@ -77,3 +77,22 @@ export type PostType = {
 
   export type SecureUser = Omit<UserType , "username" | "password" | "likes" | "posts" |  "comment" | "imgUrl">
   export type ProfileUser = Omit<UserType , "username" | "password" | "likes" | "posts" |  "comment" >
+
+  export type SessionUser = {
+    imgUrl: string;
+    userId: string;
+    role: string | null | undefined;
+    profileId: string;
+    name?: string | null | undefined;
+    email?: string | null | undefined;
+    image?: string | null | undefined;
+}
+ export type ReturnedValue = { 
+  status : string,
+  message : string
+ }
+
+ export type UserOfProfile = {profileId : string
+  userId : string
+  ImgUrl : string
+name : string}

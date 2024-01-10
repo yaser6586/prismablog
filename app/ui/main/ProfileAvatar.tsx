@@ -1,12 +1,12 @@
 import { getProfileOfUser } from "@/app/lib/data";
-import { ProfileType } from "@/app/lib/definations";
+import { ProfileType, UserOfProfile } from "@/app/lib/definations";
 import { Session } from "next-auth";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-function ProfileAvatar({ session }: { session: Session }) {
+function ProfileAvatar({ profile }: { profile: UserOfProfile }) {
   return (
     <>
       <div className="dropdown dropdown-end pt-2">
@@ -15,12 +15,13 @@ function ProfileAvatar({ session }: { session: Session }) {
           role="button"
           className="btn btn-ghost btn-circle avatar"
         >
-          <div className="w-10 rounded-full" title={`${session?.user.name}`}>
+          <div className="w-10 rounded-full" title={`${profile.name}`}>
             <Image
               alt="Tailwind CSS Navbar component"
-              src={`${session.user.imgUrl}`}
+              src={`${profile.ImgUrl}`}
               width={40}
               height={40}
+              blurDataURL="/preload.jpg"
             />
           </div>
         </div>
@@ -30,7 +31,7 @@ function ProfileAvatar({ session }: { session: Session }) {
         >
           <li>
             <Link
-              href={`/profile/${session.user.profileId}`}
+              href={`/profile/${profile.profileId}`}
               className="justify-end"
             >
               پروفایل

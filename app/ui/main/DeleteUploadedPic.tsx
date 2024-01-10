@@ -1,5 +1,6 @@
 "use client";
 import { handleDeleteUploadedPhoto } from "@/app/lib/action";
+import { SessionUser, UserType } from "@/app/lib/definations";
 import { useSession } from "next-auth/react";
 import React, { useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
@@ -13,7 +14,7 @@ function DeleteUploadedPic() {
       <button
         onClick={async () => {
           const result = await handleDeleteUploadedPhoto(
-            session?.user.imgUrl as string,
+            // session?.user.imgUrl as string,
             session?.user.userId as string
           );
           setStatus(result.status);

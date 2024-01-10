@@ -1,5 +1,10 @@
 "use client";
-import { ProfileType, ProfileUser } from "@/app/lib/definations";
+import {
+  ProfileType,
+  ProfileUser,
+  ReturnedValue,
+  UserType,
+} from "@/app/lib/definations";
 import Image from "next/image";
 import React, { useState } from "react";
 import { FcAddImage } from "react-icons/fc";
@@ -12,8 +17,15 @@ import { TfiSave } from "react-icons/tfi";
 import { AiOutlineCloseSquare } from "react-icons/ai";
 import { Session } from "next-auth";
 import DeleteUploadedPic from "./DeleteUploadedPic";
+import { PiFolderBold } from "react-icons/pi";
 
-function Profile({ profileData }: { profileData: ProfileType }) {
+function Profile({
+  profileData,
+  user,
+}: {
+  profileData: ProfileType;
+  user: UserType;
+}) {
   const [showAddAvatarMenu, setShowAddAvatarMenu] = useState(false);
   const [showChangeProfileMenu, setShowChangeProfileMenu] = useState(false);
   const [error, setError] = useState<string | undefined>();
@@ -38,31 +50,10 @@ function Profile({ profileData }: { profileData: ProfileType }) {
               </div>
             </div>
           </div>
-          <div className="m-auto">name : {profileData?.name}</div>
-          <div className="m-auto">bio : {profileData?.bio}</div>
+          <div className="m-auto text-2xl">name : {profileData?.name}</div>
+          <div className="m-auto text-2xl">bio : {profileData?.bio}</div>
           <div className="m-auto"></div>
         </div>
-        {showAddAvatarMenu && (
-          <div
-            className="flex flex-col justify-center bg-slate-400 w-[300px] h-[200px] gap-0
-                     align-middle absolute top-1/3 right-1/2.1 backdrop-blur-md bg-opacity-40 rounded-lg"
-          >
-            <div className="m-auto border-b-2 w-full text-center hover:text-black cursor-pointer">
-              <UploadForm onSubmit={uploadAvatar as () => object} />
-            </div>
-            <div className="m-auto border-b-2 w-full text-center hover:text-black cursor-pointer">
-              delete
-            </div>
-            <div className="m-auto  text-center hover:text-black cursor-pointer ">
-              <button
-                className="text-red-700"
-                onClick={() => setShowAddAvatarMenu(false)}
-              >
-                <GrClose size={30} />
-              </button>
-            </div>
-          </div>
-        )}
       </div>
     );
   } else {
@@ -91,15 +82,15 @@ function Profile({ profileData }: { profileData: ProfileType }) {
               </button>
             )}
           </div>
-          <div className="m-auto text-2xl" dir="rtl">
-            نام : {profileData?.name}
-          </div>
-          <div className="m-auto text-2xl" dir="rtl">
-            بیو : {profileData?.bio}
-          </div>
+          <div className="m-auto text-2xl">نام : {profileData?.name}</div>
+          <div className="m-auto text-2xl">بیو : {profileData?.bio}</div>
           <div className="m-auto">
             {session?.user.userId === profileData.userId && (
-              <button onClick={() => setShowChangeProfileMenu(true)}>
+              <button
+                onClick={() => {
+                  setShowChangeProfileMenu(true);
+                }}
+              >
                 <FaRegEdit size={40} />
               </button>
             )}
@@ -111,7 +102,7 @@ function Profile({ profileData }: { profileData: ProfileType }) {
            align-middle absolute top-1/3 right-1/2.1 backdrop-blur-md bg-opacity-40 rounded-lg"
           >
             <div className="m-auto border-b-2 w-full text-center hover:text-black cursor-pointer">
-              <UploadForm onSubmit={uploadAvatar as () => object} />
+              <UploadForm onSubmit={uploadAvatar as () => any} />
             </div>
             <div className="m-auto border-b-2 w-full text-center hover:text-black cursor-pointer">
               <DeleteUploadedPic />
@@ -136,6 +127,10 @@ function Profile({ profileData }: { profileData: ProfileType }) {
               }}
               className="m-auto flex flex-col justify-center gap-3 w-[400px] pl-2"
             >
+              <label htmlFor="" className="pt-2 text-center">
+                {" "}
+                توجه : فیلدهایی را که نمی خواهید آپدید کنید را خالی بگذارید
+              </label>
               <label htmlFor="name" className="m-auto">
                 نام
               </label>
@@ -144,6 +139,7 @@ function Profile({ profileData }: { profileData: ProfileType }) {
                 name="name"
                 className="input input-bordered w-full max-w-sm"
                 maxLength={20}
+                defaultValue={profileData.name}
               />
               <label htmlFor="bio" className="m-auto">
                 بیو
@@ -153,14 +149,16 @@ function Profile({ profileData }: { profileData: ProfileType }) {
                 name="bio"
                 className="input input-bordered w-full max-w-sm"
                 maxLength={400}
+                defaultValue={profileData.bio as string}
               />
               <label htmlFor="email" className="m-auto">
                 ایمیل
               </label>
               <input
-                type="text"
+                type="email"
                 name="email"
                 className="input input-bordered w-full max-w-sm"
+                defaultValue={user.email as string}
               />
               <input
                 type="text"

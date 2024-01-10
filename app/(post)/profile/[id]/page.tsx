@@ -20,11 +20,11 @@ async function page({
 }) {
   const profile = await getProfile(params.id);
 
-  //   const user = await getUserOfProfile(profile?.userId!);
+    const user = await getUserOfProfile(profile?.userId!);
 
   return (
     <div className="w-full flex justify-center p-5">
-      <Profile profileData={profile as ProfileType} />
+      <Profile profileData={profile as ProfileType} user={user} />
     </div>
   );
 }

@@ -64,7 +64,7 @@ export const authOptions : NextAuthOptions = {
           
           }
         },
-        async jwt({ token, user}) {
+        async jwt({ token, user , trigger , session}) {
             
             const u = user as unknown as UserType
            
@@ -80,6 +80,10 @@ export const authOptions : NextAuthOptions = {
 
             }
          }
+         if (trigger === "update" && session?.name) {
+        // Note, that `session` can be any arbitrary object, remember to validate it!
+        token.name = session.name
+      }
         
        return token
         }
