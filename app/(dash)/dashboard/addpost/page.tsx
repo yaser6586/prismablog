@@ -10,7 +10,7 @@ const initial = {
   message: "",
 };
 
-async function page() {
+async function AddPostPage() {
   const { data: session } = useSession();
   const [state, formAction] = useFormState(addPost, initial);
   return (
@@ -107,7 +107,7 @@ async function page() {
           dir="rtl"
         ></textarea>
         <div className="text-center m-10">
-          <AddPostButton />
+          <AddPostButton title="add post" />
         </div>
       </form>
       {state?.status === "error" ? (
@@ -119,4 +119,4 @@ async function page() {
   );
 }
 
-export default page;
+export default AddPostPage;

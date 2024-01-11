@@ -172,8 +172,10 @@ export async function handleEditPost(prevState : any , formData : FormData  ) {
   const buffer1 = Buffer.from(await imageUrl1.arrayBuffer())
   const buffer2 = Buffer.from(await imageUrl2.arrayBuffer())
   const baseUrl = "https://teknext-bucket.storage.iran.liara.space/"
-  let newParams1;
-  let newParams2;
+  // let newParams1;
+  // let newParams2;
+
+ console.log(imageUrl1)
 
   const post = await prisma.post.findUnique({
     where: {
@@ -182,16 +184,16 @@ export async function handleEditPost(prevState : any , formData : FormData  ) {
   })
 
 
-  if(imageUrl1 && post?.imageUrl){
+  if(imageUrl1.size !== 0 && post?.imageUrl){
     
      const params1 = {
         Bucket: process.env.LIARA_BUCKET_NAME,
         Key: `${post.imageUrl.slice(47,)}`
       };
-      newParams1 = {
+    const  newParams1 = {
         Body: buffer1,
         Bucket: process.env.LIARA_BUCKET_NAME,
-        Key: `post/${randomUUID()}-${imageUrl1.name}`,
+        Key: `post/${randomUUID()}-${imageUrl1?.name}`,
         ContentType : "img/jpg"
       };
    
@@ -199,6 +201,14 @@ export async function handleEditPost(prevState : any , formData : FormData  ) {
   try {
     await client.send(new DeleteObjectCommand(params1));
     await client.send(new PutObjectCommand(newParams1));
+    await prisma.post.update({
+      where :{
+        id:postId
+      },
+      data :{
+        imageUrl : `${baseUrl}${newParams1?.Key}`,
+      }
+    })
     
   } catch (error) {
     return { status : "error" , message : "عکس اول حذف نشد"}
@@ -206,24 +216,34 @@ export async function handleEditPost(prevState : any , formData : FormData  ) {
 
   }
 
-  if(imageUrl2 && post?.imageUrl2){
+  if(imageUrl2.size !== 0 && post?.imageUrl2){
     
    
     const params2 = {
        Bucket: process.env.LIARA_BUCKET_NAME,
        Key: `${post.imageUrl2.slice(47,)}`
      };
-     newParams2 = {
+     const newParams2 = {
       Body: buffer2,
       Bucket: process.env.LIARA_BUCKET_NAME,
-      Key: `post/${randomUUID()}-${imageUrl2.name}`,
+      Key: `post/${randomUUID()}-${imageUrl2?.name}`,
       ContentType : "img/jpg"
     };
+
    
  try {
  
    await client.send(new DeleteObjectCommand(params2));
    await client.send(new PutObjectCommand(newParams2));
+   await prisma.post.update({
+    where :{
+      id:postId
+    },
+    data :{
+      imageUrl2 : `${baseUrl}${newParams2?.Key}`,
+    }
+  })
+ 
  } catch (error) {
   return { status : "error" , message : "عکس دوم حذف نشد"}
  }
@@ -236,9 +256,7 @@ export async function handleEditPost(prevState : any , formData : FormData  ) {
             id : postId
         },
         data :{
-         imageUrl : `${baseUrl}${newParams1?.Key}`,
-         imageUrl2 : `${baseUrl}${newParams2?.Key}`,
-         videoUrl:videoUrl,
+        videoUrl:videoUrl,
          title:title,
          intro : intro,
          content : content,

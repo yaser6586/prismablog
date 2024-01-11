@@ -65,7 +65,7 @@ async function postDetail({
               src={post.imageUrl}
               width={1366}
               height={768}
-              className="w-full h-[300px] px-0 mx-0  object-cover"
+              className="w-full h-fit px-0 mx-0  object-cover"
             />
           ) : (
             <Image
@@ -90,7 +90,7 @@ async function postDetail({
               src={post.imageUrl2}
               width={1366}
               height={768}
-              className="w-full h-[300px] px-0 mx-0  object-cover"
+              className="w-full h-fit px-0 mx-0  object-cover"
             />
           )}
 
