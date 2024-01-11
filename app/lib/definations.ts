@@ -3,10 +3,13 @@ export type PostType = {
     createdAt: Date
     updatedAt :Date
     title   :  string 
+    intro? : string | null
     content : string | null
+    conclusion? : string | null
     imageUrl? : string | null
+    imageUrl2? : string | null
+    videoUrl? : string  | null
     category? :  Category
-    
     view ? :   number | null
     published: Boolean 
     authorId : string
@@ -87,10 +90,7 @@ export type PostType = {
     email?: string | null | undefined;
     image?: string | null | undefined;
 }
- export type ReturnedValue = { 
-  status : string,
-  message : string
- }
+
 
  export type UserOfProfile = {profileId : string
   userId : string

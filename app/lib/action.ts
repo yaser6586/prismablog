@@ -1,11 +1,11 @@
 'use server'
 
 import { revalidatePath } from "next/cache";
-import { addNewPost, getAllUser } from "./data";
+import {  getAllUser } from "./data";
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/auth";
-import { Category, RestPassInputs, ReturnedValue, SessionUser, SignUpInputs, UserType } from "./definations";
+import { Category, RestPassInputs, SessionUser, SignUpInputs, UserType } from "./definations";
 import {hash} from 'bcrypt'
 import { PrismaClient } from "@prisma/client";
 import { randomUUID } from "crypto";
@@ -36,30 +36,99 @@ if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
 
 // const prisma = new PrismaClient()
 
-export async function addPost(data : FormData){
-    const session = await getServerSession(authOptions)
+export async function addPost(prevState : any,formData : FormData){
     
-    try {
-        const  userId = session?.user.userId as string
-        const title = data.get("title") as string
-        const content = data.get('body') as string
-        const category = data.get('category') as Category
-        const imageUrl = data.get('url') as string
+    
+    
+        const  userId = formData.get("userId") as string
+        const title = formData.get("title") as string
+        const content = formData.get('body') as string
+        const category = formData.get('category') as Category
+        const imageUrl1 = formData.get('image1') as File
+        const imageUrl2 = formData.get('image2') as File
+        const videoUrl =  formData.get("videoUrl") as string
+        const intro = formData.get("intro") as string
+        const conclusion = formData.get("conclusion") as string
+        const buffer1 = Buffer.from(await imageUrl1.arrayBuffer())
+        const buffer2 = Buffer.from(await imageUrl2.arrayBuffer())
+        const baseUrl = "https://teknext-bucket.storage.iran.liara.space/"
+
+
+        const params1 = {
+          Body: buffer1,
+          Bucket: process.env.LIARA_BUCKET_NAME,
+          Key: `post/${randomUUID()}-${imageUrl1.name}`,
+          ContentType : "img/jpg"
+        };
+
+        const params2 = {
+          Body: buffer2,
+          Bucket: process.env.LIARA_BUCKET_NAME,
+          Key: `post/${randomUUID()}-${imageUrl2.name}`,
+          ContentType : "img/jpg"
+        };
+
+
+        if(params1&&params2){
+
+          try {
+            await client.send(new PutObjectCommand(params1));
+            await client.send(new PutObjectCommand(params2));
+          } catch (error) {
+            return { status : "error" , message : "تصویرها آپلود نشدند"}
+          }
+
+        }
+
+
+     try {
         
-        addNewPost(userId,title,content , category , imageUrl)
-        prisma.$disconnect()
-    } catch (error) {
-        throw new Error('the post cant be added') 
-    }
+    await prisma.post.create({
+      data : {
+        imageUrl : `${baseUrl}${params1.Key}`,
+        imageUrl2 :`${baseUrl}${params2.Key}`,
+        videoUrl,
+        title,intro,content,conclusion,authorId:userId,category,
+      }
+    })
+
+  
+    return {status : "successful", message : "پست با موفقیت ارسال شد"}
+
+
+     } catch (error) {
+      return {status : "error", message : "پست جدید ایجاد نشد"}
+
+     }
    
-   
-    revalidatePath('/');
-    redirect('/#posts');
+
    
 
 }
 
 export async function deletePost(id : string){
+ let  params1;
+ let params2;
+
+  const post = await prisma.post.findUnique({
+    where : {
+      id : id
+    }
+  })
+
+
+  if(post?.imageUrl&&post.imageUrl2) {
+    params1 = {
+      Bucket: process.env.LIARA_BUCKET_NAME,
+      Key: `${post.imageUrl.slice(47,)}`
+    };
+    params2 = {
+      Bucket: process.env.LIARA_BUCKET_NAME,
+      Key: `${post.imageUrl2.slice(47,)}`
+    };
+  }
+
+ 
 
     const deleteComments =  prisma.comment.deleteMany({
         where : {
@@ -75,37 +144,117 @@ export async function deletePost(id : string){
     // be carful in transaction other prisma cruds should not have await keyword 
     try {
         const transaction = await prisma.$transaction([deleteComments ,deletePosts ])
-        prisma.$disconnect()
+        await client.send(new DeleteObjectCommand(params1!));
+        await client.send(new DeleteObjectCommand(params2!));
+
+        
     } catch (error) {
         throw new Error('the post cant be deleted')
     }
     
 
    
-    revalidatePath('/dashboard/editpost');
+    
     revalidatePath('/' );
   
 }
 
-export async function handleEditPost(id:string , title: string , body : string  ) {
+export async function handleEditPost(prevState : any , formData : FormData  ) {
+  const  postId = formData.get("postId") as string
+  const title = formData.get("title") as string
+  const content = formData.get('body') as string
+  const category = formData.get('category') as Category
+  const imageUrl1 = formData.get('image1') as File
+  const imageUrl2 = formData.get('image2') as File
+  const videoUrl =  formData.get("videoUrl") as string
+  const intro = formData.get("intro") as string
+  const conclusion = formData.get("conclusion") as string
+  const buffer1 = Buffer.from(await imageUrl1.arrayBuffer())
+  const buffer2 = Buffer.from(await imageUrl2.arrayBuffer())
+  const baseUrl = "https://teknext-bucket.storage.iran.liara.space/"
+  let newParams1;
+  let newParams2;
+
+  const post = await prisma.post.findUnique({
+    where: {
+      id : postId
+    }
+  })
+
+
+  if(imageUrl1 && post?.imageUrl){
+    
+     const params1 = {
+        Bucket: process.env.LIARA_BUCKET_NAME,
+        Key: `${post.imageUrl.slice(47,)}`
+      };
+      newParams1 = {
+        Body: buffer1,
+        Bucket: process.env.LIARA_BUCKET_NAME,
+        Key: `post/${randomUUID()}-${imageUrl1.name}`,
+        ContentType : "img/jpg"
+      };
+   
+    
+  try {
+    await client.send(new DeleteObjectCommand(params1));
+    await client.send(new PutObjectCommand(newParams1));
+    
+  } catch (error) {
+    return { status : "error" , message : "عکس اول حذف نشد"}
+  }
+
+  }
+
+  if(imageUrl2 && post?.imageUrl2){
+    
+   
+    const params2 = {
+       Bucket: process.env.LIARA_BUCKET_NAME,
+       Key: `${post.imageUrl2.slice(47,)}`
+     };
+     newParams2 = {
+      Body: buffer2,
+      Bucket: process.env.LIARA_BUCKET_NAME,
+      Key: `post/${randomUUID()}-${imageUrl2.name}`,
+      ContentType : "img/jpg"
+    };
+   
+ try {
+ 
+   await client.send(new DeleteObjectCommand(params2));
+   await client.send(new PutObjectCommand(newParams2));
+ } catch (error) {
+  return { status : "error" , message : "عکس دوم حذف نشد"}
+ }
+
+ }
     
   try {
     await prisma.post.update({
         where : {
-            id : id
+            id : postId
         },
         data :{
-          title : title,
-          content : body,
-       
-        }
+         imageUrl : `${baseUrl}${newParams1?.Key}`,
+         imageUrl2 : `${baseUrl}${newParams2?.Key}`,
+         videoUrl:videoUrl,
+         title:title,
+         intro : intro,
+         content : content,
+         conclusion:  conclusion,
+         category:category
+         }
     })
     revalidatePath('/' );
-    revalidatePath('/dashboard/editpost' );
-   prisma.$disconnect()
-    
+    return { status : "successful" , message : "پست با موفقیت آپدیت شد"}
+   
+
   } catch (error) {
-    throw new Error('the post cant be updated')
+    return {
+      status : "error",
+      message : "پست متاسفانه آپدیت نشد"
+    }
   }
   
 
@@ -115,7 +264,7 @@ export async function addComment( commentData : FormData){
     const comment = commentData.get("comment") as string
     const postId = commentData.get("postId") as string
     const userId =  commentData.get("userId") as string
-    console.log(userId)
+    
    try {
   
     await prisma.comment.create({
@@ -236,7 +385,8 @@ export async function deleteComment(id : string){
        
         data : {
           userId : newUser.id,
-          name : newUser.name
+          name : newUser.name,
+          bio : ""
          
           // profileImagUrl : `https://teknext-bucket.storage.iran.liara.space/avatar/default-avatar.png`
         }
@@ -687,7 +837,7 @@ export async function handleDeleteUploadedPhoto( userId : string){
   
  
   try {
-    console.log(params.Key)
+    
     await client.send(new DeleteObjectCommand(params));
     await prisma.user.update({
       where : {

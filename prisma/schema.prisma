@@ -11,13 +11,17 @@ datasource db {
 }
 
 model Post {
-  id        String    @id @default(uuid())
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  title     String    @db.VarChar(255)
-  imageUrl  String?
-  content   String?
-  category  Category?
+  id         String    @id @default(uuid())
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  title      String    @db.VarChar(255)
+  imageUrl   String?
+  imageUrl2  String?
+  videoUrl   String?
+  intro      String?
+  content    String?
+  conclusion String?
+  category   Category?
 
   view      Int?      @default(0)
   published Boolean   @default(false)

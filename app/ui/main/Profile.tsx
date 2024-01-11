@@ -1,10 +1,5 @@
 "use client";
-import {
-  ProfileType,
-  ProfileUser,
-  ReturnedValue,
-  UserType,
-} from "@/app/lib/definations";
+import { ProfileType, UserType } from "@/app/lib/definations";
 import Image from "next/image";
 import React, { useState } from "react";
 import { FcAddImage } from "react-icons/fc";
@@ -15,9 +10,8 @@ import { changProfile, uploadAvatar } from "@/app/lib/action";
 import { GrClose } from "react-icons/gr";
 import { TfiSave } from "react-icons/tfi";
 import { AiOutlineCloseSquare } from "react-icons/ai";
-import { Session } from "next-auth";
+
 import DeleteUploadedPic from "./DeleteUploadedPic";
-import { PiFolderBold } from "react-icons/pi";
 
 function Profile({
   profileData,
@@ -50,8 +44,8 @@ function Profile({
               </div>
             </div>
           </div>
-          <div className="m-auto text-2xl">name : {profileData?.name}</div>
-          <div className="m-auto text-2xl">bio : {profileData?.bio}</div>
+          <div className="m-auto text-2xl">نام : {profileData?.name}</div>
+          <div className="m-auto text-2xl">بیو : {profileData?.bio}</div>
           <div className="m-auto"></div>
         </div>
       </div>
@@ -118,26 +112,26 @@ function Profile({
           </div>
         )}
         {showChangeProfileMenu && (
-          <div className="flex flex-col justify-center md:w-1/2 w-11/12 top-52 bg-slate-400 backdrop-blur-md bg-opacity-40 absolute">
+          <div className="flex flex-col justify-center w-full md:w-1/2  top-52  bg-slate-400 backdrop-blur-md bg-opacity-40 absolute">
             <form
               action={async (data) => {
                 const result = await changProfile(data);
                 setError(result?.status);
                 setMessage(result?.message);
               }}
-              className="m-auto flex flex-col justify-center gap-3 w-[400px] pl-2"
+              className="m-auto flex flex-col justify-center gap-3 w-full px-2"
             >
-              <label htmlFor="" className="pt-2 text-center">
+              <label htmlFor="" className="pt-2 text-center w-full ">
                 {" "}
                 توجه : فیلدهایی را که نمی خواهید آپدید کنید را خالی بگذارید
               </label>
-              <label htmlFor="name" className="m-auto">
+              <label htmlFor="name" className="m-auto w-full text-center">
                 نام
               </label>
               <input
                 type="text"
                 name="name"
-                className="input input-bordered w-full max-w-sm"
+                className="input input-bordered w-full "
                 maxLength={20}
                 defaultValue={profileData.name}
               />
@@ -147,7 +141,7 @@ function Profile({
               <input
                 type="text"
                 name="bio"
-                className="input input-bordered w-full max-w-sm"
+                className="input input-bordered w-full "
                 maxLength={400}
                 defaultValue={profileData.bio as string}
               />
@@ -157,7 +151,7 @@ function Profile({
               <input
                 type="email"
                 name="email"
-                className="input input-bordered w-full max-w-sm"
+                className="input input-bordered w-full "
                 defaultValue={user.email as string}
               />
               <input

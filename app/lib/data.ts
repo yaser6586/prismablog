@@ -36,31 +36,31 @@ export async function getAllPostsForProps() {
      return postsId 
 }
 
-export async function addNewPost(
-  userId: string,
-  title: string,
-  content: string,
-  category : Category,
-  imageUrl : string
-) {
+// export async function addNewPost(
+//   userId: string,
+//   title: string,
+//   content: string,
+//   category : Category,
+//   imageUrl : string
+// ) {
   
-  try {
-    await prisma.post.create({
-      data: {
-        title: title,
-        content: content,
-        authorId: userId,
-        category : category,
-        imageUrl : imageUrl
-      },
-    });
+//   try {
+//     await prisma.post.create({
+//       data: {
+//         title: title,
+//         content: content,
+//         authorId: userId,
+//         category : category,
+//         imageUrl : imageUrl
+//       },
+//     });
    
-  } catch (error) {
+//   } catch (error) {
     
-    throw new Error('the post cant be added form data module')
-  }
+//     throw new Error('the post cant be added form data module')
+//   }
   
-}
+// }
 
 export async function getAllUser() {
   const users = await prisma.user.findMany();

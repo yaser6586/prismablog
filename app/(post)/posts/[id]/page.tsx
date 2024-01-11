@@ -76,12 +76,40 @@ async function postDetail({
               className="w-full h-[300px] px-0 mx-0  object-cover mb-20"
             />
           )}
+          {post?.videoUrl && <video src={`${post?.videoUrl}`}> ویدئو</video>}
           <p
-            className="mt-8 min-h-screen font-thin text-lg whitespace-pre-wrap leading-8 "
+            className="mt-8 min-h-fit font-thin text-lg whitespace-pre-wrap leading-8 "
+            dir="rtl"
+          >
+            {" "}
+            {post?.intro}
+          </p>
+          {post?.imageUrl2 && (
+            <Image
+              alt="post image"
+              src={post.imageUrl2}
+              width={1366}
+              height={768}
+              className="w-full h-[300px] px-0 mx-0  object-cover"
+            />
+          )}
+
+          <p
+            className="mt-8 min-h-fit font-thin text-lg whitespace-pre-wrap leading-8 "
             dir="rtl"
           >
             {" "}
             {post?.content}
+          </p>
+          <p
+            className="mt-8 min-h-fit font-thin text-lg whitespace-pre-wrap leading-8 "
+            dir="rtl"
+          >
+            <span className="text-center text-xl font-bold py-4 block">
+              {" "}
+              سخن پایانی
+            </span>{" "}
+            <br /> {post?.conclusion}
           </p>
         </div>
         {session && (
