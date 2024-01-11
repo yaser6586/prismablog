@@ -52,6 +52,15 @@ export async function addPost(prevState : any,formData : FormData){
         const buffer1 = Buffer.from(await imageUrl1.arrayBuffer())
         const buffer2 = Buffer.from(await imageUrl2.arrayBuffer())
         const baseUrl = "https://teknext-bucket.storage.iran.liara.space/"
+         
+        if(imageUrl1.size === 0 && imageUrl2.size === 0){
+
+         
+         
+            return { status : "error" , message : "لطفا فیلد عکسها را خالی نگذارید"}
+         
+
+        }
 
 
         const params1 = {
@@ -69,7 +78,7 @@ export async function addPost(prevState : any,formData : FormData){
         };
 
 
-        if(params1&&params2){
+        if(imageUrl1.size !== 0 && imageUrl2.size !== 0){
 
           try {
             await client.send(new PutObjectCommand(params1));
