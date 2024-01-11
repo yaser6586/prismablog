@@ -14,7 +14,7 @@ import { PiReadCvLogoBold } from "react-icons/pi";
 async function Post({ postData }: { postData: PostType }) {
   const comments = await getComment(postData.id);
   const likeNumberData: LikeType[] = await likeNumber(postData.id);
- 
+
   return (
     <div
       className="post flex flex-col w-[300px] h-[320px] border
@@ -26,7 +26,7 @@ async function Post({ postData }: { postData: PostType }) {
           src={postData.imageUrl}
           width={800}
           height={600}
-          className="m-auto mt-0 w-full max-h-[170px] rounded-t-lg object-cover"
+          className="m-auto mt-0 w-full max-h-[170px] min-h-[170px] rounded-t-lg object-cover"
         />
       ) : (
         <Image
@@ -46,7 +46,6 @@ async function Post({ postData }: { postData: PostType }) {
       </p>
 
       <PostLinker postData={postData} />
-    
 
       <div className="flex flex-row justify-between mx-4">
         <div className="flex flex-row ">
