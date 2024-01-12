@@ -69,7 +69,7 @@ function Navbar({ profile }: { profile: UserOfProfile }) {
               </Link>
             </div>
             <div>
-              <Link href={"/"} className="hover:text-black">
+              <Link href={"/about"} className="hover:text-black">
                 درباره
               </Link>
             </div>
@@ -114,7 +114,7 @@ function Navbar({ profile }: { profile: UserOfProfile }) {
                 </Link>
               </div>
               <div>
-                <Link href={"/"} className="hover:text-black">
+                <Link href={"/about"} className="hover:text-black">
                   درباره
                 </Link>
               </div>

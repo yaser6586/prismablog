@@ -889,4 +889,38 @@ export async function handleDeleteUploadedPhoto( userId : string){
 }
 
 
+export async function contactUsForm(prevStat : any , formData : FormData){
+ 
+ const email = formData.get("email") as string
+ const subject = formData.get("subject") as string
+ const message = formData.get("message") as string
+
+  const transporter =  nodemailer.createTransport({
+    host: MAIL_HOST,
+    port: MAIL_PORT,
+    
+    secure: false,
+    auth: {
+    
+      user: MAIL_USER,
+      pass: MAIL_PASSWORD,
+    },
+  });
+  
+  transporter.sendMail({
+    from: email,
+    to: 'info@teknext.ir',
+    subject: `${subject}`,
+    html : `<h1 style={direction: rtl;}> فرستنده ایمیل <a href=${email}>${email}</a> </h1> </br>
+    <p style={direction: rtl;} >متن ایمیل : </br>
+  ${message}</p>`,
+  })
+  
+  return {
+    status : "successfull",
+    message : "پیام شما با موفقیت ارسال شد"
+  }
+
+}
+
 
