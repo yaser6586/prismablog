@@ -39,7 +39,7 @@ function page() {
         </div>
         <div className="m-auto flex flex-row justify-between gap-10 border-2 rounded-3xl w-full">
           <div className="avatar m-auto p-2">
-            <div className="w-60 rounded-full ">
+            <div className=" w-40 md:w-60 rounded-full ">
               <Image
                 alt="admin pic"
                 src="/me.jpg"
