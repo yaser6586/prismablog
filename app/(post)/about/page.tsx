@@ -2,16 +2,17 @@
 import { contactUsForm } from "@/app/lib/action";
 import AddPostButton from "@/app/ui/dashboardui/AddPostButton";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 import { useFormState } from "react-dom";
-import { IoClose } from "react-icons/io5";
-<IoClose />;
-const initial = {
-  status: "",
-  message: "",
-};
+// import { IoClose } from "react-icons/io5";
+
+// const initial = {
+//   status: "",
+//   message: "",
+// };
 function page() {
-  const [state, formAction] = useFormState(contactUsForm, initial);
+  // const [state, formAction] = useFormState(contactUsForm, initial);
 
   return (
     <div className="flex  justify-center flex-col md:flex-row-reverse gap-3 ">
@@ -60,9 +61,25 @@ function page() {
           </div>
         </div>
       </div>
-      <div className="m-auto basis-1/2 my-10 flex flex-col justify-center gap-2  ">
-        <div className="m-auto font-bold text-2xl ">تماس با ما</div>
-        <form action={formAction} className="m-auto" id="contact-form">
+      <div className="m-auto basis-1/2 mt-10 flex flex-col justify-center gap-2 px-10 ">
+        <div className="m-auto text-start" dir="rtl">
+          <span className="text-xl font">تماس با ما</span> <br />
+          موضوع یا مطلب خاصی مد نظر شما است که در قالب مقاله در تک نکست منتشر
+          شود؟ <br />
+          در هنگام مرور صفحات سایت متوجه مشکل خاصی شده اید؟
+          <br /> پیشنهاد یا انتقادی به تحریریه ی تک نکست دارید؟ <br />
+          از طریق ایمیل زیر با ما در ارتباط باشید و انتقادات و پیشنهادات خود را
+          با ما در میان بگذارید. <br />
+          ایمیل: <br /> <br />
+          <Link
+            href="mailto:contact@teknext.ir"
+            className="text-red-700 font-bold"
+          >
+            contact@teknext.ir
+          </Link>
+        </div>
+
+        {/* <form action={formAction} className="m-auto" id="contact-form">
           <div
             className="m-auto w-[500px] flex flex-col justify-center gap-3 
           border-2 border-slate-300 rounded-md p-6 relative"
@@ -123,7 +140,7 @@ function page() {
               <div className="text-green-700 m-auto">{state?.message}</div>
             )}
           </div>
-        </form>
+        </form> */}
       </div>
     </div>
   );
