@@ -84,15 +84,6 @@ async function postDetail({
             {" "}
             {post?.intro}
           </p>
-          {post?.imageUrl2 && (
-            <Image
-              alt="post image"
-              src={post.imageUrl2}
-              width={1366}
-              height={768}
-              className="w-full h-fit px-0 mx-0  object-cover"
-            />
-          )}
 
           <p
             className="mt-8 min-h-fit font-thin text-lg whitespace-pre-wrap leading-8 "
@@ -101,6 +92,17 @@ async function postDetail({
             {" "}
             {post?.content}
           </p>
+
+          {post?.imageUrl2 && (
+            <Image
+              alt="post image"
+              src={post.imageUrl2}
+              width={1366}
+              height={768}
+              className="w-full h-fit px-0 mx-0  object-cover my-10"
+            />
+          )}
+
           <p
             className="mt-8 min-h-fit font-thin text-lg whitespace-pre-wrap leading-8 "
             dir="rtl"

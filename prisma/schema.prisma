@@ -94,4 +94,5 @@ enum Category {
   movie
   gadgets
   game
+  car
 }

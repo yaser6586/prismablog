@@ -62,7 +62,7 @@ export type PostType = {
     password: string;
     confirmPassword: string;
   };
-  export type Category = 'tech' |'goodnews' |'movie'|'gadgets'|'game' | null
+  export type Category = 'tech' |'goodnews' |'movie'|'gadgets'|'game' |'car' |null
   
   export type SignInInputs = {
    

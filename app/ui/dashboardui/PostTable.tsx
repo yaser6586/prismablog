@@ -84,11 +84,22 @@ function PostTable({ postData, index }: { postData: PostType; index: number }) {
                     <option disabled defaultValue={postData.category as string}>
                       select one category
                     </option>
-                    <option>tech</option>
-                    <option>goodnews</option>
-                    <option>movie</option>
-                    <option>gadgets</option>
-                    <option>game</option>
+                    <option selected={postData.category === "tech"}>
+                      tech
+                    </option>
+                    <option selected={postData.category === "goodnews"}>
+                      goodnews
+                    </option>
+                    <option selected={postData.category === "movie"}>
+                      movie
+                    </option>
+                    <option selected={postData.category === "gadgets"}>
+                      gadgets
+                    </option>
+                    <option selected={postData.category === "game"}>
+                      game
+                    </option>
+                    <option selected={postData.category === "car"}>car</option>
                   </select>
                 </label>
                 <input

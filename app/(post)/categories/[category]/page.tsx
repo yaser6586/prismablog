@@ -19,7 +19,9 @@ async function page({ params }: { params: { category: Category } }) {
       case "movie":
         return "فیلم و سریال";
         break;
-
+      case "car":
+        return "خودرو";
+        break;
       default:
         return "بازی";
         break;

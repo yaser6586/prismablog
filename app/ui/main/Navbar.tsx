@@ -136,28 +136,57 @@ function Navbar({ profile }: { profile: UserOfProfile }) {
          rounded-xl right-44 top-12 md:right-[350px]  lg:right-[550px]  "
           >
             <div className="m-auto p-3">
-              <Link href={"/categories/tech"} className="hover:text-black">
+              <Link
+                href={"/categories/tech"}
+                className="hover:text-black"
+                onClick={() => setShowCatMenu(false)}
+              >
                 تکنولوژی
               </Link>
             </div>
             <div className="m-auto p-3">
-              <Link href={"/categories/goodnews"} className="hover:text-black">
+              <Link
+                href={"/categories/goodnews"}
+                className="hover:text-black"
+                onClick={() => setShowCatMenu(false)}
+              >
                 خبر خوب
               </Link>
             </div>
             <div className="m-auto p-3">
-              <Link href={"/categories/movie"} className="hover:text-black">
+              <Link
+                href={"/categories/movie"}
+                className="hover:text-black"
+                onClick={() => setShowCatMenu(false)}
+              >
                 فیلم
               </Link>
             </div>
             <div className="m-auto p-3">
-              <Link href={"/categories/gadgets"} className="hover:text-black">
+              <Link
+                href={"/categories/gadgets"}
+                className="hover:text-black"
+                onClick={() => setShowCatMenu(false)}
+              >
                 گجت
               </Link>
             </div>
             <div className="m-auto p-3">
-              <Link href={"/categories/game"} className="hover:text-black">
+              <Link
+                href={"/categories/game"}
+                className="hover:text-black"
+                onClick={() => setShowCatMenu(false)}
+              >
                 بازی
+              </Link>
+            </div>
+            <div className="m-auto p-3">
+              <Link
+                href={"/categories/car"}
+                className="hover:text-black"
+                onClick={() => setShowCatMenu(false)}
+              >
+                خودرو
               </Link>
             </div>
           </div>

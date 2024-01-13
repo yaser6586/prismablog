@@ -32,7 +32,7 @@ function Footer() {
           </div>
         </nav>
         <aside>
-          <p>Copyright © 2023 - All right reserved by TekNext</p>
+          <p>Copyright © 2024 - All right reserved by TekNext</p>
         </aside>
       </footer>
     </div>

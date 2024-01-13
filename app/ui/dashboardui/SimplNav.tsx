@@ -159,6 +159,15 @@ function SimpleNave({ profile }: { profile: UserOfProfile }) {
                 بازی
               </Link>
             </div>
+            <div className="m-auto p-3">
+              <Link
+                href={"/categories/car"}
+                className="hover:text-black"
+                onClick={() => setShowCatMenu(false)}
+              >
+                خودرو
+              </Link>
+            </div>
           </div>
         )}
 
