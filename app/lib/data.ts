@@ -35,6 +35,15 @@ export async function getAllPostsForProps() {
   
      return postsId 
 }
+export async function getAllPostsForSitemap() {
+  // await new Promise(resolve  => setTimeout(resolve, 5000))
+    const posts= await prisma.post.findMany({
+    
+    });
+  
+     return posts
+}
+
 
 // export async function addNewPost(
 //   userId: string,
