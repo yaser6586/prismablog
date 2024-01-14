@@ -9,6 +9,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
 import { redirect } from "next/navigation";
 import { Content } from "next/font/google";
+import { stringify } from "querystring";
 
 // export const dynamicParams = false;
 
@@ -17,10 +18,10 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   // read route params
-  const id = params.id;
+  const slug = params.slug;
 
   // fetch data
-  const post = await getPost(id);
+  const post = await getPost(decodeURI(params.slug));
 
   // optionally access and extend (rather than replace) parent metadata
   const previousImages = (await parent).openGraph?.images || [];
@@ -43,11 +44,17 @@ async function postDetail({
   params,
 }: {
   params: {
-    id: string;
+    slug: string;
   };
 }) {
-  const post = await getPost(params.id);
-  const comments = await getComment(post?.id as string);
+  // slug encoded when use persian letter and pass it to params
+  //so we need decode it before pass to getPost function with decodeURI method
+  const post = await getPost(decodeURI(params.slug));
+
+  if (post === null) {
+    redirect("/not-found");
+  }
+  const comments = await getComment(post?.id! as string);
   const session = await getServerSession(authOptions);
   const like = await getLike(session?.user.userId as string, post?.id!);
 

@@ -41,6 +41,7 @@ export async function addPost(prevState : any,formData : FormData){
     
     
         const  userId = formData.get("userId") as string
+        let  slug = formData.get("slug") as string
         const title = formData.get("title") as string
         const content = formData.get('body') as string
         const category = formData.get('category') as Category
@@ -52,6 +53,14 @@ export async function addPost(prevState : any,formData : FormData){
         const buffer1 = Buffer.from(await imageUrl1.arrayBuffer())
         const buffer2 = Buffer.from(await imageUrl2.arrayBuffer())
         const baseUrl = "https://teknext-bucket.storage.iran.liara.space/"
+         // remove white spaces and replace with -
+        let trimmedSlug = slug.trim();
+        let formattedSlug = trimmedSlug.replace(/\s+/g, '-');
+        const slugExist = await prisma.post.findUnique({where : {slug : slug}})
+
+        if(slugExist){
+          return { status : "error" , message : "  این اسلاگ قبلا ثبت شده است لطفا اسلاگ دیگری انتخاب کنید"}
+        }
          
         if(imageUrl1.size === 0 && imageUrl2.size === 0){
 
@@ -96,7 +105,7 @@ export async function addPost(prevState : any,formData : FormData){
       data : {
         imageUrl : `${baseUrl}${params1.Key}`,
         imageUrl2 :`${baseUrl}${params2.Key}`,
-        videoUrl,
+        videoUrl,slug : formattedSlug,
         title,intro,content,conclusion,authorId:userId,category,
       }
     })
@@ -322,11 +331,11 @@ export async function deleteComment(id : string){
     
  
 }
- export async function AddViewPost(id : string){
+ export async function AddViewPost(slug : string){
     try {
         await prisma.post.update({
             where : {
-                id : id
+                slug :slug
             },
             data : {
                 view : {increment : 1} 

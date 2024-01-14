@@ -1,6 +1,7 @@
 export type PostType = {
     id  : string
-    createdAt: Date
+    slug : string | null
+    createdAt: Date 
     updatedAt :Date
     title   :  string 
     intro? : string | null
@@ -52,7 +53,7 @@ export type PostType = {
     postId : string   
   }
   export type Props = {
-    params: { id: string }
+    params: { slug: string }
     searchParams: { [key: string]: string | string[] | undefined }
   }
   export type SignUpInputs = {

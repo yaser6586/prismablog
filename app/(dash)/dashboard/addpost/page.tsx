@@ -33,6 +33,7 @@ async function AddPostPage() {
             <option>movie</option>
             <option>gadgets</option>
             <option>game</option>
+            <option>car</option>
           </select>
         </label>
         <input
@@ -64,6 +65,16 @@ async function AddPostPage() {
             />
           </div>
         </div>
+        <input
+          type="text"
+          placeholder="اسلاگ"
+          id="slug"
+          name="slug"
+          className="input input-bordered input-md w-full  m-4 "
+          minLength={10}
+          required
+          dir="rtl"
+        />
 
         <input
           type="text"

@@ -67,22 +67,27 @@ export async function getAllUser() {
   return users;
 }
 
-export async function getPost(id : string) { 
+export async function getPost(slug : string) { 
   try {
-    const post = await prisma.post.findUnique({
-      where: {
-        id: id,
-        
-      },
+  const post = await prisma.post.findUnique({
+    where: {
+     slug : slug
       
-      
-    });
+    },
     
-    return post;
     
-  } catch (error) {
-    throw new Error('Post has not be found')
-  }
+  });
+  
+  return post;
+
+} catch (error) {
+  console.log(error)
+  throw new Error('Post has not be found')
+}
+  
+
+    
+  
  
 }
 

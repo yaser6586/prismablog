@@ -12,6 +12,7 @@ datasource db {
 
 model Post {
   id         String    @id @default(uuid())
+  slug       String?    @unique
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
   title      String    @db.VarChar(255)
@@ -29,8 +30,6 @@ model Post {
   authorId  String
   Comment   Comment[]
   liked     Like[]
-
-  @@index([id])
 }
 
 model Like {

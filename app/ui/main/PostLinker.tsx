@@ -17,10 +17,10 @@ function PostLinker({ postData }: { postData: PostType }) {
         </button>
       ) : (
         <Link
-          href={`/posts/${postData.id as string}`}
+          href={`/posts/${postData.slug}`}
           onClick={() => {
             setLoading(true);
-            AddViewPost(postData.id);
+            AddViewPost(postData.slug);
           }}
           className="  btn  btn-wide bg-primary m-auto my-2  text-white flex flex-row gap-1"
         >
