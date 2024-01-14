@@ -20,7 +20,7 @@ function PostLinker({ postData }: { postData: PostType }) {
           href={`/posts/${postData.slug}`}
           onClick={() => {
             setLoading(true);
-            AddViewPost(postData.slug as string);
+            AddViewPost(decodeURI(postData.slug!));
           }}
           className="  btn  btn-wide bg-primary m-auto my-2  text-white flex flex-row gap-1"
         >
