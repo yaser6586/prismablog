@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { resolve } from "path";
 import { Category, UserType } from "./definations";
 import { title } from "process";
+import { revalidatePath } from "next/cache";
 
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient }
 
@@ -35,15 +36,21 @@ export async function getAllPostsForProps() {
   
      return postsId 
 }
+
 export async function getAllPostsForSitemap() {
   // await new Promise(resolve  => setTimeout(resolve, 5000))
-    const posts= await prisma.post.findMany({
-    
-    });
+  const posts = await prisma.post.findMany({
   
-     return posts
-}
+  
+    select :{
+      id: true,
+      slug : true,
+      updatedAt : true
+    }
+  });
 
+  return posts
+}
 
 // export async function addNewPost(
 //   userId: string,
