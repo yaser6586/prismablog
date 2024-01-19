@@ -16,7 +16,7 @@ async function AddPostPage() {
   return (
     <div className="flex flex-col justify-center m-14  text-center">
       <form action={formAction} className="m-auto w-full">
-        <label className="form-control md:w-full m-auto ml-4 ">
+        <label className="form-control w-full  m-auto ml-4 ">
           <div className="label">
             <span className="label-text">Pick the best category name</span>
           </div>
@@ -41,9 +41,9 @@ async function AddPostPage() {
           name="videoUrl"
           id="url"
           placeholder="آدرس لینک ویدئو"
-          className="input input-bordered w-[283px] md:w-full  ml-4 my-4"
+          className="input input-bordered w-full    ml-4 my-4"
         />
-        <div className="m-auto py-4 flex flex-col md:w-full md:flex-row justify-between px-10 ">
+        <div className="m-auto py-4 flex flex-col w-full md:flex-row justify-between px-10 ">
           <div>
             <label htmlFor="image1">عکس اول</label>
             <input
@@ -70,7 +70,7 @@ async function AddPostPage() {
           placeholder="اسلاگ"
           id="slug"
           name="slug"
-          className="input input-bordered input-md w-full  m-4 "
+          className="input input-bordered input-md w-full  my-4 "
           minLength={10}
           required
           dir="rtl"
@@ -81,7 +81,7 @@ async function AddPostPage() {
           placeholder="تایتل پست"
           id="title"
           name="title"
-          className="input input-bordered input-md w-full  m-4 "
+          className="input input-bordered input-md w-full  my-4 "
           required
           dir="rtl"
         />
@@ -89,7 +89,7 @@ async function AddPostPage() {
           type="text"
           id="userId"
           name="userId"
-          className="input input-bordered input-md w-full m-4 "
+          className="input input-bordered input-md w-full my-4 "
           defaultValue={session?.user.userId}
           hidden
         />
@@ -97,7 +97,7 @@ async function AddPostPage() {
           placeholder="مقدمه پست"
           id="intro"
           name="intro"
-          className="textarea textarea-bordered textarea-md w-full   m-4 "
+          className="textarea textarea-bordered textarea-md w-full   my-4 "
           required
           dir="rtl"
         ></textarea>
@@ -105,7 +105,7 @@ async function AddPostPage() {
           placeholder="بدنه اصلی پست"
           id="body"
           name="body"
-          className="textarea textarea-bordered textarea-lg w-full  m-4 min-h-[300px] "
+          className="textarea textarea-bordered textarea-lg w-full  my-4 min-h-[300px] "
           required
           dir="rtl"
         ></textarea>
@@ -113,11 +113,11 @@ async function AddPostPage() {
           placeholder="نتیجه گیری پست"
           id="conclusion"
           name="conclusion"
-          className="textarea textarea-bordered textarea-md w-full m-4 "
+          className="textarea textarea-bordered textarea-md w-full my-4 "
           required
           dir="rtl"
         ></textarea>
-        <div className="text-center m-10">
+        <div className="text-center">
           <AddPostButton width="wide" title="add post" />
         </div>
       </form>
