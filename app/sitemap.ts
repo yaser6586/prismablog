@@ -1,9 +1,17 @@
 import { MetadataRoute } from "next";
+import { getAllPostsForSitemap } from "./lib/data";
+export const revalidate = 30
 
-
-export default  function sitemap() : MetadataRoute.Sitemap {
-
-
+export default async  function sitemap() : Promise<MetadataRoute.Sitemap> {
+ 
+ try {
+  const posts = await getAllPostsForSitemap();
+   const allPosts = posts.map((pt ) => ( {
+    url: `https://teknext.ir/posts/${pt.slug}`,
+    lastModified: pt.updatedAt,
+    changeFrequency: "weekly" as "weekly",
+    priority: 0.8 ,
+  }))
   return [
     {
       url: "https://teknext.ir",
@@ -16,6 +24,11 @@ export default  function sitemap() : MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.8,
-    }
+    }, ... allPosts as MetadataRoute.Sitemap
   ];
+ } catch (error) {
+  console.log(error)
+ }
+return[]
+ 
 }

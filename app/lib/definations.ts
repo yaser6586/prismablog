@@ -97,3 +97,10 @@ export type PostType = {
   userId : string
   ImgUrl : string
 name : string}
+
+export type ChangePassInputs = {
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+  userId: string;
+};

@@ -39,17 +39,21 @@ export async function getAllPostsForProps() {
 
 export async function getAllPostsForSitemap() {
   // await new Promise(resolve  => setTimeout(resolve, 5000))
-  const posts = await prisma.post.findMany({
-  
-  
-    select :{
-      id: true,
-      slug : true,
-      updatedAt : true
-    }
-  });
 
-  return posts
+    const posts = await prisma.post.findMany({
+  
+  
+      select :{
+        id: true,
+        slug : true,
+        updatedAt : true
+      }
+    });
+  
+    return posts
+    
+  
+ 
 }
 
 // export async function addNewPost(

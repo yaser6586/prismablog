@@ -21,7 +21,8 @@ import Provider from "./(post)/Provider";
 
 const metadata: Metadata = {
   title: "مجله تکنولوژی تک نکست",
-  description: "اخبار تکنولوژی و دنیای گجتها",
+  description:
+    " اخبار تکنولوژی و دنیای گجتها،خبر جدید ، گوشی همراه ، اخبار موضوعات مختلف و محصولات جدید، سامسونگ ، آیفون ، لپ تاپ ، ایسوس و... ",
 };
 
 export default function RootLayout({

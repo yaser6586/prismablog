@@ -8,7 +8,9 @@ import Cm from "./Cm";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
 import Link from "next/link";
-
+import { useFormState } from "react-dom";
+import { useSession } from "next-auth/react";
+const initial = { status: "", message: "" };
 async function Comment({
   postId,
   comments,
@@ -17,10 +19,16 @@ async function Comment({
   comments: CommentType[];
 }) {
   const session = await getServerSession(authOptions);
+  // const { data: session } = useSession();
 
+  // const [state, formAction] = useFormState(addComment, initial);
+  // if (state?.status === "successful") {
+  //   let form = document.getElementById("form") as HTMLFormElement;
+  //   form?.reset();
+  // }
   return (
     <div className="commentContainer w-full h-fit flex flex-col justify-center gap-1 ">
-      <form action={addComment}>
+      <form action={addComment} id="form">
         <div className="relative ">
           {session ? (
             <input

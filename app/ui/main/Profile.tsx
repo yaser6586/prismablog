@@ -10,8 +10,9 @@ import { changProfile, uploadAvatar } from "@/app/lib/action";
 import { GrClose } from "react-icons/gr";
 import { TfiSave } from "react-icons/tfi";
 import { AiOutlineCloseSquare } from "react-icons/ai";
-
+import { MdOutlinePassword } from "react-icons/md";
 import DeleteUploadedPic from "./DeleteUploadedPic";
+import Link from "next/link";
 
 function Profile({
   profileData,
@@ -69,10 +70,14 @@ function Profile({
             {session?.user.userId === profileData.userId && (
               <button
                 onClick={() => setShowAddAvatarMenu(true)}
-                className="m-auto mt-2"
+                className="m-auto mt-2 btn btn-wide bg-primary text-white flex
+                flex-row justify-center hover:text-green-600 "
                 title="اضافه کردن عکس"
               >
-                <FcAddImage size={40} />
+                <div className="m-auto">
+                  <FcAddImage size={40} />
+                </div>
+                <div className="m-auto"> اضافه کردن عکس آواتار</div>
               </button>
             )}
           </div>
@@ -80,13 +85,32 @@ function Profile({
           <div className="m-auto text-2xl">بیو : {profileData?.bio}</div>
           <div className="m-auto">
             {session?.user.userId === profileData.userId && (
-              <button
-                onClick={() => {
-                  setShowChangeProfileMenu(true);
-                }}
-              >
-                <FaRegEdit size={40} />
-              </button>
+              <div className="flex flex-col justify-center gap-3">
+                <button
+                  onClick={() => {
+                    setShowChangeProfileMenu(true);
+                  }}
+                  className="btn btn-wide bg-primary text-white m-auto flex
+                   flex-row justify-center hover:text-green-600"
+                >
+                  <div className="m-auto">
+                    <FaRegEdit size={40} />
+                  </div>
+                  <div className="m-auto"> تغییر اطلاعات پروفایل</div>
+                </button>
+
+                <Link
+                  className="btn btn-wide bg-primary text-white m-auto flex flex-row justify-center
+                 hover:text-red-600 "
+                  href={"/changepassword"}
+                >
+                  {" "}
+                  <div className="m-auto">
+                    <MdOutlinePassword size={40} />
+                  </div>
+                  <div className="m-auto  "> (رمز ورود)تغییر پسورد</div>
+                </Link>
+              </div>
             )}
           </div>
         </div>
@@ -146,13 +170,13 @@ function Profile({
                 defaultValue={profileData.bio as string}
               />
               <label htmlFor="email" className="m-auto">
-                ایمیل
+                تغییر ایمیل قبلی
               </label>
               <input
                 type="email"
                 name="email"
                 className="input input-bordered w-full "
-                defaultValue={user.email as string}
+                placeholder={`ایمیل شما : ${user.email}`}
               />
               <input
                 type="text"

@@ -10,8 +10,6 @@ import { ImFire } from "react-icons/im";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/auth";
 
-<ImFire />;
-
 export default async function Home({
   searchParams,
 }: {

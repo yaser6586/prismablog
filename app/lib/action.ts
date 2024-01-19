@@ -5,8 +5,8 @@ import {  getAllUser } from "./data";
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/auth";
-import { Category, RestPassInputs, SessionUser, SignUpInputs, UserType } from "./definations";
-import {hash} from 'bcrypt'
+import { Category, ChangePassInputs, RestPassInputs, SessionUser, SignUpInputs, UserType } from "./definations";
+import {compare, hash} from 'bcrypt'
 import { PrismaClient } from "@prisma/client";
 import { randomUUID } from "crypto";
 import nodemailer from "nodemailer"
@@ -312,7 +312,7 @@ export async function addComment( commentData : FormData){
     })
     revalidatePath('/');
    
-    prisma.$disconnect()
+    
     
    } catch (error) {
     console.log(error)
@@ -932,4 +932,66 @@ export async function contactUsForm(prevStat : any , formData : FormData){
 
 }
 
+export async function checkIfPasswordMatch(data : ChangePassInputs){
+  const oldPassword = data.oldPassword as string
+  const userId = data.userId as string
+  const user = await prisma.user.findUnique({
+    where : {
+      id : userId
+    }
+  })
+  
+  
+  const validPassword = await compare(oldPassword as string , user?.password as string)
+  
+  if(!validPassword){
+  return { status : "error", message :"پسورد قبلی اشتباه است"}
+  }
+  return { status : "successful", message :"پسورد مطابقت دارد"}
+}
+export async function changeCurrentPassword(prevState : any  , formData : FormData){
+
+ const oldPassword = formData.get("oldPassword") as string
+ const newPassword = formData.get("newPassword") as string
+ const confirmPassword = formData.get("confirmPassword") as string
+ const userId = formData.get("userId") as string
+
+try {
+ const user = await prisma.user.findUnique({
+    where : {
+      id : userId
+    }
+  })
+ const validPassword = await compare(oldPassword as string , user?.password as string)
+ if(!validPassword){ return { status : "error", message :"پسورد قبلی اشتباه است"}
+}
+} catch (error) {
+  return { status : "error", message :"کاربر مورد نظر یافت نشد"}
+}
+ 
+
+ 
+if(newPassword!== confirmPassword){ return { status : "error", message :"مقدار پسورد جدید با تکرار پسورد مطابقت ندارند"}
+}
+
+
+
+
+const hashedPassword = await hash(newPassword,6)
+
+
+  await prisma.user.update({
+    where : {
+      id : userId
+    },
+    data : {
+      password : hashedPassword
+    }
+  })
+  
+
+
+return{status : "successful", message : " پسورد با موفقیت آپدید شد"}
+
+}
 
