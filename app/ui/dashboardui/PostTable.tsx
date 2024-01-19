@@ -179,7 +179,7 @@ function PostTable({ postData, index }: { postData: PostType; index: number }) {
                   defaultValue={postData.conclusion as string}
                 ></textarea>
                 <div className="text-center my-2">
-                  <AddPostButton title="update post" />{" "}
+                  <AddPostButton width="wide" title="update post" />{" "}
                   <button
                     className="btn btn-wide bg-error"
                     onClick={() => setShowEditDialog(false)}

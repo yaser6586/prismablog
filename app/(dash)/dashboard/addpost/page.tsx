@@ -118,7 +118,7 @@ async function AddPostPage() {
           dir="rtl"
         ></textarea>
         <div className="text-center m-10">
-          <AddPostButton title="add post" />
+          <AddPostButton width="wide" title="add post" />
         </div>
       </form>
       {state?.status === "error" ? (

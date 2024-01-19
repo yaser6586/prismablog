@@ -52,7 +52,7 @@ function ChangePassword() {
           //   })}
           name="oldPassword"
           id="lastPassword"
-          className="m-auto my-2 input input-bordered  w-[255px] md:w-full md:max-w-xs"
+          className="m-auto my-2 input input-bordered  w-full max-w-xs"
         />
         <label htmlFor="newPassword" className="m-auto">
           پسورد جدید
@@ -68,7 +68,8 @@ function ChangePassword() {
           //   })}
           name="newPassword"
           id="newPassword"
-          className="m-auto my-2 input input-bordered  w-[255px] md:w-full md:max-w-xs"
+          className="m-auto my-2 input input-bordered  w-full max-w-xs"
+          minLength={6}
           required
         />
         {/* <p className="m-auto text-sm text-red-700">
@@ -93,8 +94,7 @@ function ChangePassword() {
           //   })}
           name="confirmPassword"
           id="confirmPassword"
-          className="m-auto my-2 input input-bordered w-[255px] md:w-full md:max-w-xs"
-          minLength={6}
+          className="m-auto my-2 input input-bordered w-full max-w-xs"
           required
         />
         {/* <p className="m-auto text-sm text-red-700">
@@ -108,14 +108,14 @@ function ChangePassword() {
           defaultValue={session?.user?.userId}
           hidden
         />
-        <div className="m-auto">
+        <div className=" m-auto">
           {/* <button
             typeof="submit"
             className="btn btn-wide bg-primary text-white"
           >
             تغییر پسورد
           </button> */}
-          <AddPostButton title="تغییر پسورد" />
+          <AddPostButton width="[300px]" title="تغییر پسورد" />
         </div>
       </form>
 
